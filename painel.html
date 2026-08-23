@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Painel de Produtos | Tênis da Juh</title>
+<style>
+  :root{--rosa:#ef8ea0;--marrom:#3b2824;--bg:#fff7f9;--cinza:#756765;--borda:#efdfe3}
+  *{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--marrom)}
+  .wrap{width:min(1100px,94%);margin:28px auto 60px}.top{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap}
+  h1{margin:0;font-size:clamp(2rem,5vw,3.3rem)}.lead{color:var(--cinza);line-height:1.6;max-width:760px}
+  .notice{background:#fff3cf;border:1px solid #ebd693;border-radius:16px;padding:14px 16px;margin:22px 0;line-height:1.5}
+  .grid{display:grid;grid-template-columns:380px 1fr;gap:20px;align-items:start}
+  .card{background:#fff;border:1px solid var(--borda);border-radius:22px;padding:20px;box-shadow:0 10px 28px rgba(76,41,48,.07)}
+  label{display:block;font-weight:800;margin:13px 0 6px}input,select{width:100%;padding:12px;border:1px solid #dfcfd3;border-radius:12px;background:#fff;font:inherit}
+  input[type=file]{padding:9px}.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  button{border:none;border-radius:12px;padding:12px 14px;font:inherit;font-weight:900;cursor:pointer}.primary{background:var(--rosa);color:#fff}.dark{background:var(--marrom);color:#fff}.light{background:#f8edf0;color:var(--marrom)}
+  .actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}.actions button{flex:1}
+  .product{display:grid;grid-template-columns:90px 1fr auto;gap:14px;align-items:center;padding:12px 0;border-bottom:1px solid #eee}.product:last-child{border-bottom:none}
+  .pic{width:90px;height:90px;background:#f9edf0;border-radius:14px;display:grid;place-items:center;overflow:hidden;font-size:36px}.pic img{width:100%;height:100%;object-fit:cover}
+  .meta{color:var(--cinza);font-size:.9rem;margin-top:4px}.mini-actions{display:flex;gap:6px;flex-direction:column}.mini-actions button{padding:8px 10px}
+  .download{margin-top:20px;background:#eaf8ee;border:1px solid #bcdcc4;border-radius:18px;padding:18px}
+  .download strong{display:block;margin-bottom:8px}.download ol{margin:8px 0 0 20px;padding:0;line-height:1.55}
+  .preview{margin-top:10px}.preview img{max-width:100%;max-height:180px;border-radius:14px;display:block}
+  .danger{background:#ffe8eb;color:#9d3348}.small{font-size:.85rem;color:var(--cinza)}
+  @media(max-width:800px){.grid{grid-template-columns:1fr}.product{grid-template-columns:74px 1fr}.pic{width:74px;height:74px}.mini-actions{grid-column:1/-1;flex-direction:row}.mini-actions button{flex:1}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div>
+      <div style="font-weight:900;color:#c7983f;text-transform:uppercase;letter-spacing:.08em;font-size:.8rem">Tênis da Juh</div>
+      <h1>Painel de produtos 👟</h1>
+      <p class="lead">Aqui você consegue adicionar, editar e excluir tênis sem mexer no código. No final, clique em <b>Baixar catálogo atualizado</b>.</p>
+    </div>
+    <button class="dark" onclick="window.open('index.html','_blank')">Abrir site</button>
+  </div>
+
+  <div class="notice"><b>Importante:</b> este painel funciona no seu próprio navegador. Ele não precisa de senha nem internet para editar. Para atualizar o site publicado, você só precisa substituir o arquivo <b>produtos.js</b>.</div>
+
+  <div class="grid">
+    <div class="card">
+      <h2 id="formTitle" style="margin-top:0">Adicionar tênis</h2>
+
+      <label>Nome do tênis</label>
+      <input id="name" placeholder="Ex.: Tênis Branco Casual">
+
+      <div class="row">
+        <div>
+          <label>Preço</label>
+          <input id="price" type="number" min="0" step="0.01" placeholder="129.90">
+        </div>
+        <div>
+          <label>Linha</label>
+          <select id="line"><option value="1">1ª linha</option><option value="2">2ª linha</option></select>
+        </div>
+      </div>
+
+      <label>Tamanhos disponíveis</label>
+      <input id="sizes" placeholder="Ex.: 34,35,36,37,38,39">
+      <div class="small">Separe os tamanhos por vírgula.</div>
+
+      <label>Foto do tênis</label>
+      <input id="imageFile" type="file" accept="image/*">
+      <div class="small">Você pode escolher uma foto do seu computador ou celular.</div>
+      <div class="preview" id="preview"></div>
+
+      <div class="actions">
+        <button class="primary" id="saveBtn" onclick="saveProduct()">Adicionar</button>
+        <button class="light" id="cancelBtn" onclick="cancelEdit()" style="display:none">Cancelar</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+        <h2 style="margin:0">Produtos cadastrados</h2>
+        <span id="count" class="small"></span>
+      </div>
+      <div id="list" style="margin-top:12px"></div>
+
+      <div class="download">
+        <strong>Terminou de editar?</strong>
+        <button class="dark" style="width:100%" onclick="downloadCatalog()">⬇ Baixar catálogo atualizado</button>
+        <ol>
+          <li>O navegador vai baixar um arquivo chamado <b>produtos.js</b>.</li>
+          <li>Coloque esse arquivo dentro da pasta do site.</li>
+          <li>Quando o Windows perguntar, escolha <b>Substituir o arquivo</b>.</li>
+          <li>Abra o site novamente e pronto.</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="produtos.js"></script>
+<script>
+let products = JSON.parse(JSON.stringify(Array.isArray(window.PRODUTOS) ? window.PRODUTOS : []));
+let editingId = null;
+let selectedImage = "";
+
+const money = v => Number(v).toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
+
+document.getElementById("imageFile").addEventListener("change", async (e)=>{
+  const file = e.target.files[0];
+  if(!file) return;
+  selectedImage = await resizeImage(file, 900, 0.82);
+  showPreview();
+});
+
+function resizeImage(file, maxSize, quality){
+  return new Promise((resolve,reject)=>{
+    const reader = new FileReader();
+    reader.onload = () => {
+      const img = new Image();
+      img.onload = () => {
+        let w = img.width, h = img.height;
+        if(w > h && w > maxSize){ h = Math.round(h * maxSize / w); w = maxSize; }
+        else if(h >= w && h > maxSize){ w = Math.round(w * maxSize / h); h = maxSize; }
+        const c = document.createElement("canvas");
+        c.width=w;c.height=h;
+        c.getContext("2d").drawImage(img,0,0,w,h);
+        resolve(c.toDataURL("image/jpeg",quality));
+      };
+      img.onerror = reject;
+      img.src = reader.result;
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+function showPreview(){
+  const p = document.getElementById("preview");
+  p.innerHTML = selectedImage ? `<img src="${selectedImage}" alt="Prévia">` : "";
+}
+
+function saveProduct(){
+  const name = document.getElementById("name").value.trim();
+  const price = Number(document.getElementById("price").value);
+  const line = document.getElementById("line").value;
+  const sizes = document.getElementById("sizes").value.split(",").map(x=>x.trim()).filter(Boolean).map(Number).filter(n=>!Number.isNaN(n));
+
+  if(!name){ alert("Digite o nome do tênis."); return; }
+  if(!price || price <= 0){ alert("Digite um preço válido."); return; }
+  if(!sizes.length){ alert("Digite pelo menos um tamanho."); return; }
+
+  if(editingId !== null){
+    const p = products.find(x => Number(x.id) === Number(editingId));
+    p.name=name;p.price=price;p.line=line;p.sizes=sizes;
+    if(selectedImage) p.image=selectedImage;
+  }else{
+    const nextId = products.length ? Math.max(...products.map(p=>Number(p.id)||0))+1 : 1;
+    products.push({id:nextId,name,price,line,sizes,image:selectedImage});
+  }
+
+  cancelEdit();
+  render();
+}
+
+function editProduct(id){
+  const p = products.find(x=>Number(x.id)===Number(id));
+  if(!p) return;
+  editingId = id;
+  document.getElementById("formTitle").textContent = "Editar tênis";
+  document.getElementById("saveBtn").textContent = "Salvar alterações";
+  document.getElementById("cancelBtn").style.display = "block";
+  document.getElementById("name").value = p.name;
+  document.getElementById("price").value = p.price;
+  document.getElementById("line").value = String(p.line);
+  document.getElementById("sizes").value = (p.sizes||[]).join(",");
+  selectedImage = p.image || "";
+  document.getElementById("imageFile").value = "";
+  showPreview();
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function deleteProduct(id){
+  if(!confirm("Tem certeza que deseja excluir este tênis?")) return;
+  products = products.filter(x=>Number(x.id)!==Number(id));
+  if(editingId===id) cancelEdit();
+  render();
+}
+
+function cancelEdit(){
+  editingId = null;
+  selectedImage = "";
+  document.getElementById("formTitle").textContent = "Adicionar tênis";
+  document.getElementById("saveBtn").textContent = "Adicionar";
+  document.getElementById("cancelBtn").style.display = "none";
+  document.getElementById("name").value = "";
+  document.getElementById("price").value = "";
+  document.getElementById("line").value = "1";
+  document.getElementById("sizes").value = "";
+  document.getElementById("imageFile").value = "";
+  showPreview();
+}
+
+function render(){
+  document.getElementById("count").textContent = `${products.length} produto(s)`;
+  const list = document.getElementById("list");
+  if(!products.length){ list.innerHTML = '<p class="small">Nenhum produto cadastrado.</p>'; return; }
+  list.innerHTML = products.map(p=>`
+    <div class="product">
+      <div class="pic">${p.image ? `<img src="${p.image}" alt="">` : "👟"}</div>
+      <div><b>${escapeHtml(p.name)}</b><div class="meta">${p.line}ª linha • ${money(p.price)} • Tamanhos: ${(p.sizes||[]).join(", ")}</div></div>
+      <div class="mini-actions">
+        <button class="light" onclick="editProduct(${p.id})">Editar</button>
+        <button class="danger" onclick="deleteProduct(${p.id})">Excluir</button>
+      </div>
+    </div>
+  `).join("");
+}
+
+function escapeHtml(v){ return String(v).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+
+function downloadCatalog(){
+  const text = "window.PRODUTOS = " + JSON.stringify(products,null,2) + ";\n";
+  const blob = new Blob([text],{type:"text/javascript;charset=utf-8"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href=url;a.download="produtos.js";document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+
+render();
+</script>
+</body>
+</html>
