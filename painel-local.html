@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Painel LOCAL | Tênis da Juh</title>
+<style>
+:root{--rosa:#ef8ea0;--marrom:#3b2824;--bg:#fff7f9;--cinza:#756765;--borda:#efdfe3;--dourado:#c7983f}
+*{box-sizing:border-box} body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--marrom)}
+.wrap{width:min(1120px,94%);margin:28px auto 60px}
+h1{font-size:clamp(2rem,5vw,3.2rem);margin:4px 0}
+.lead{color:var(--cinza);line-height:1.6}
+.card{background:#fff;border:1px solid var(--borda);border-radius:22px;padding:20px;box-shadow:0 10px 28px rgba(76,41,48,.07);margin-top:20px}
+.grid{display:grid;grid-template-columns:380px 1fr;gap:20px;align-items:start}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+label{display:block;font-weight:800;margin:13px 0 6px}
+input,select{width:100%;padding:12px;border:1px solid #dfcfd3;border-radius:12px;background:#fff;font:inherit}
+input[type=checkbox]{width:auto}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}.actions button{flex:1}
+button{border:none;border-radius:12px;padding:12px 14px;font:inherit;font-weight:900;cursor:pointer}
+.primary{background:var(--rosa);color:#fff}.dark{background:var(--marrom);color:#fff}.light{background:#f8edf0;color:var(--marrom)}.danger{background:#ffe8eb;color:#9d3348}
+.small,.meta{font-size:.85rem;color:var(--cinza)}
+.notice{background:#fff3cf;border:1px solid #ebd693;border-radius:16px;padding:14px 16px;line-height:1.5;margin-top:18px}
+.good{background:#eaf8ee;border-color:#bcdcc4}
+.product{display:grid;grid-template-columns:90px 1fr auto;gap:14px;align-items:center;padding:12px 0;border-bottom:1px solid #eee}
+.pic{width:90px;height:90px;background:#fff;border:1px solid #eee;border-radius:14px;display:grid;place-items:center;overflow:hidden}
+.pic img{width:100%;height:100%;object-fit:contain}
+.mini-actions{display:flex;gap:6px;flex-direction:column}.mini-actions button{padding:8px 10px}
+.preview-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(92px,1fr));gap:10px;margin-top:10px}
+.preview-item{aspect-ratio:1;background:#fff;border:1px solid #eee;border-radius:14px;overflow:hidden;display:grid;place-items:center}
+.preview-item img{width:100%;height:100%;object-fit:contain}
+.preview-empty{padding:16px;border:1px dashed #e0d2d6;border-radius:14px;color:var(--cinza);font-size:.9rem;text-align:center}
+.coupon{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid #eee}
+.pill{display:inline-block;background:#fff0f4;border:1px solid #efd4dc;border-radius:999px;padding:5px 9px;font-weight:950}
+.check{display:flex;align-items:center;gap:9px;margin-top:10px}.check label{margin:0}
+.status{font-weight:900;color:#167a3a}
+@media(max-width:800px){.grid{grid-template-columns:1fr}.product{grid-template-columns:74px 1fr}.pic{width:74px;height:74px}.mini-actions{grid-column:1/-1;flex-direction:row}.mini-actions button{flex:1}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div style="font-weight:900;color:var(--dourado);text-transform:uppercase;letter-spacing:.08em;font-size:.8rem">Tênis da Juh</div>
+  <h1>Painel LOCAL 🔒</h1>
+  <p class="lead">Esse painel fica só no seu computador. Agora ele aceita <b>várias fotos por produto</b>.</p>
+
+  <div class="notice good">
+    <b>1º passo sempre:</b> clique em <b>Importar produtos.js atual</b> e selecione o arquivo mais recente da sua loja.
+  </div>
+
+  <div class="card">
+    <h2 style="margin-top:0">Carregar catálogo atual</h2>
+    <input id="importFile" type="file" accept=".js,text/javascript">
+    <div id="importStatus" class="small" style="margin-top:10px">Nenhum arquivo importado ainda.</div>
+  </div>
+
+  <div class="card">
+    <h2 style="margin-top:0">Formas de pagamento 💳</h2>
+    <div class="check"><input id="pixEnabled" type="checkbox" checked><label for="pixEnabled">Pix disponível</label></div>
+    <div class="check"><input id="cardEnabled" type="checkbox" checked><label for="cardEnabled">Cartão disponível</label></div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <h2 id="formTitle" style="margin-top:0">Adicionar tênis</h2>
+      <label>Nome</label><input id="name" placeholder="Ex.: Adidas Samba">
+
+      <div class="row">
+        <div><label>Preço</label><input id="price" type="number" min="0" step="0.01" placeholder="109.99"></div>
+        <div><label>Linha</label><select id="line"><option value="1">1ª linha</option><option value="2">2ª linha</option></select></div>
+      </div>
+
+      <div class="row">
+        <div><label>Gênero</label><select id="gender"><option value="unissex">Unissex</option><option value="masculino">Masculino</option><option value="feminino">Feminino</option></select></div>
+        <div><label>Tamanhos</label><input id="sizes" placeholder="34,35,36,37,38"></div>
+      </div>
+      <div class="small">Separe os tamanhos por vírgula.</div>
+
+      <label>Fotos do tênis</label>
+      <input id="imageFiles" type="file" accept="image/*" multiple>
+      <div class="small">Você pode selecionar 1 ou várias fotos. Se estiver editando, as novas fotos substituem as antigas.</div>
+      <div id="preview" class="preview-grid"></div>
+
+      <div class="actions">
+        <button class="primary" id="saveBtn" onclick="saveProduct()">Adicionar</button>
+        <button class="light" id="cancelBtn" onclick="cancelEdit()" style="display:none">Cancelar</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2 style="margin-top:0">Produtos cadastrados</h2>
+      <div id="list"><p class="small">Importe seu produtos.js para começar.</p></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2 style="margin-top:0">Cupons 🎟️</h2>
+    <div class="grid">
+      <div>
+        <label>Código</label><input id="couponCode" placeholder="Ex.: JUH10" style="text-transform:uppercase">
+        <div class="row">
+          <div><label>Tipo</label><select id="couponType"><option value="percent">Porcentagem (%)</option><option value="fixed">Valor fixo (R$)</option></select></div>
+          <div><label>Valor</label><input id="couponValue" type="number" min="0" step="0.01" placeholder="10"></div>
+        </div>
+        <label>Compra mínima</label><input id="couponMin" type="number" min="0" step="0.01" placeholder="0">
+
+        <label>Aplicar cupom em</label>
+        <select id="couponScope" onchange="updateCouponTargetVisibility()">
+          <option value="all">Todos os tênis</option>
+          <option value="one">Apenas um tênis</option>
+        </select>
+
+        <div id="couponTargetBox" style="display:none">
+          <label>Escolha o tênis</label>
+          <select id="couponProduct"></select>
+          <div class="small">O desconto será calculado somente sobre este produto.</div>
+        </div>
+
+        <div class="check"><input id="couponActive" type="checkbox" checked><label for="couponActive">Cupom ativo</label></div>
+        <div class="actions">
+          <button class="primary" id="couponSaveBtn" onclick="saveCoupon()">Adicionar cupom</button>
+          <button class="light" id="couponCancelBtn" onclick="cancelCouponEdit()" style="display:none">Cancelar</button>
+        </div>
+      </div>
+      <div id="couponList"><p class="small">Importe seu produtos.js para ver os cupons.</p></div>
+    </div>
+  </div>
+
+  <div class="card" style="background:#eaf8ee;border-color:#bcdcc4">
+    <h2 style="margin-top:0">Terminou? ✅</h2>
+    <button class="dark" style="width:100%;font-size:1.05rem" onclick="downloadCatalog()">⬇ Baixar produtos.js atualizado</button>
+    <p>Depois envie <b>somente esse produtos.js</b> para o GitHub.</p>
+  </div>
+</div>
+
+<script>
+let products=[], coupons=[], config={pix:true,card:true};
+let editingId=null, editingCouponIndex=null, selectedImages=[];
+
+const $ = id => document.getElementById(id);
+const money = v => Number(v).toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
+const escapeHtml = v => String(v).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
+
+function genderLabel(value){
+  const gender = String(value || "unissex").toLowerCase();
+  if(gender === "masculino") return "Masculino";
+  if(gender === "feminino") return "Feminino";
+  return "Unissex";
+}
+
+function normalizedImages(product){
+  const images = Array.isArray(product.images) ? product.images.filter(Boolean) : [];
+  if(images.length) return images;
+  return product.image ? [product.image] : [];
+}
+
+function normalizeProducts(){
+  products.forEach(product=>{
+    product.gender = product.gender || "unissex";
+    product.images = normalizedImages(product);
+    product.image = product.images[0] || "";
+  });
+}
+
+$("importFile").addEventListener("change", async e=>{
+  const file=e.target.files[0];
+  if(!file) return;
+
+  const text=await file.text();
+
+  try{
+    const sandbox={};
+    const fn=new Function("window", text + `
+      return {
+        produtos: Array.isArray(window.PRODUTOS)?window.PRODUTOS:[],
+        cupons: Array.isArray(window.CUPONS)?window.CUPONS:[],
+        config: window.CONFIG_LOJA||{pix:true,card:true}
+      };
+    `);
+
+    const result=fn(sandbox);
+    products=JSON.parse(JSON.stringify(result.produtos));
+    coupons=JSON.parse(JSON.stringify(result.cupons));
+    config=JSON.parse(JSON.stringify(result.config));
+
+    normalizeProducts();
+
+    $("pixEnabled").checked=config.pix!==false;
+    $("cardEnabled").checked=config.card!==false;
+
+    $("importStatus").innerHTML=`<span class="status">✓ Catálogo carregado:</span> ${products.length} produto(s) e ${coupons.length} cupom(ns).`;
+
+    renderProducts();
+    renderCoupons();
+    updateCouponTargetVisibility();
+  }catch(err){
+    alert("Não consegui ler esse produtos.js. Verifique se escolheu o arquivo correto.");
+    console.error(err);
+  }
+});
+
+$("imageFiles").addEventListener("change", async e=>{
+  const files=[...e.target.files];
+  if(!files.length) return;
+
+  try{
+    selectedImages = await Promise.all(files.map(file=>resizeImage(file,1000,.84)));
+    showPreview();
+  }catch(err){
+    alert("Não consegui carregar uma ou mais imagens. Tente novamente.");
+    console.error(err);
+  }
+});
+
+function resizeImage(file,maxSize,quality){
+  return new Promise((resolve,reject)=>{
+    const reader=new FileReader();
+    reader.onload=()=>{
+      const image=new Image();
+      image.onload=()=>{
+        let w=image.width, h=image.height;
+        if(w>h && w>maxSize){
+          h=Math.round(h*maxSize/w); w=maxSize;
+        }else if(h>=w && h>maxSize){
+          w=Math.round(w*maxSize/h); h=maxSize;
+        }
+        const canvas=document.createElement("canvas");
+        canvas.width=w; canvas.height=h;
+        const ctx=canvas.getContext("2d");
+        ctx.drawImage(image,0,0,w,h);
+        resolve(canvas.toDataURL("image/jpeg",quality));
+      };
+      image.onerror=reject;
+      image.src=reader.result;
+    };
+    reader.onerror=reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+function showPreview(){
+  const preview=$("preview");
+  if(!selectedImages.length){
+    preview.innerHTML='<div class="preview-empty">Nenhuma foto selecionada ainda.</div>';
+    return;
+  }
+
+  preview.innerHTML=selectedImages.map((src,index)=>`
+    <div class="preview-item" title="Foto ${index+1}">
+      <img src="${src}" alt="Prévia ${index+1}">
+    </div>
+  `).join("");
+}
+
+function saveProduct(){
+  const productName=$("name").value.trim();
+  const productPrice=Number($("price").value);
+  const productLine=$("line").value;
+  const productGender=$("gender").value;
+  const productSizes=$("sizes").value.split(",").map(x=>Number(x.trim())).filter(x=>!Number.isNaN(x));
+
+  if(!productName){ alert("Digite o nome do tênis."); return; }
+  if(!productPrice || productPrice<=0){ alert("Digite um preço válido."); return; }
+  if(!productSizes.length){ alert("Digite pelo menos um tamanho. Ex.: 34,35,36,37"); return; }
+
+  if(editingId!==null){
+    const item=products.find(x=>Number(x.id)===Number(editingId));
+    if(!item){ alert("Não encontrei esse produto para editar."); return; }
+
+    item.name=productName;
+    item.price=productPrice;
+    item.line=productLine;
+    item.gender=productGender;
+    item.sizes=productSizes;
+
+    if(selectedImages.length){
+      item.images=[...selectedImages];
+      item.image=selectedImages[0];
+    }
+
+    alert("Produto atualizado ✅");
+  }else{
+    const nextId=products.length ? Math.max(...products.map(x=>Number(x.id)||0))+1 : 1;
+    products.push({
+      id:nextId,
+      name:productName,
+      price:productPrice,
+      line:productLine,
+      gender:productGender,
+      sizes:productSizes,
+      images:[...selectedImages],
+      image:selectedImages[0] || ""
+    });
+    alert("Tênis adicionado ✅");
+  }
+
+  normalizeProducts();
+  cancelEdit();
+  renderProducts();
+}
+
+function editProduct(id){
+  const product=products.find(x=>Number(x.id)===Number(id));
+  if(!product) return;
+
+  editingId=id;
+  $("formTitle").textContent="Editar tênis";
+  $("saveBtn").textContent="Salvar";
+  $("cancelBtn").style.display="block";
+
+  $("name").value=product.name || "";
+  $("price").value=product.price || "";
+  $("line").value=String(product.line || "1");
+  $("gender").value=String(product.gender || "unissex");
+  $("sizes").value=(product.sizes || []).join(",");
+
+  selectedImages=[...normalizedImages(product)];
+  showPreview();
+
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function deleteProduct(id){
+  if(confirm("Excluir este tênis?")){
+    products=products.filter(x=>Number(x.id)!==Number(id));
+    renderProducts();
+    renderCoupons();
+    updateCouponTargetVisibility();
+  }
+}
+
+function cancelEdit(){
+  editingId=null;
+  selectedImages=[];
+
+  $("formTitle").textContent="Adicionar tênis";
+  $("saveBtn").textContent="Adicionar";
+  $("cancelBtn").style.display="none";
+
+  $("name").value="";
+  $("price").value="";
+  $("line").value="1";
+  $("gender").value="unissex";
+  $("sizes").value="";
+  $("imageFiles").value="";
+
+  showPreview();
+}
+
+function renderProducts(){
+  refreshCouponProductOptions();
+
+  $("list").innerHTML=products.length ? products.map(product=>{
+    const images=normalizedImages(product);
+    return `
+      <div class="product">
+        <div class="pic">
+          ${images[0] ? `<img src="${images[0]}" alt="${escapeHtml(product.name)}">` : "👟"}
+        </div>
+        <div>
+          <b>${escapeHtml(product.name)}</b>
+          <div class="meta">
+            ${product.line}ª linha • ${genderLabel(product.gender)} • ${money(product.price)} • Tam: ${(product.sizes||[]).join(", ")} • ${images.length} foto(s)
+          </div>
+        </div>
+        <div class="mini-actions">
+          <button class="light" onclick="editProduct(${product.id})">Editar</button>
+          <button class="danger" onclick="deleteProduct(${product.id})">Excluir</button>
+        </div>
+      </div>
+    `;
+  }).join("") : '<p class="small">Nenhum produto.</p>';
+}
+
+function refreshCouponProductOptions(){
+  const select=$("couponProduct");
+  const current=select.value;
+  select.innerHTML=products.length
+    ? products.map(p=>`<option value="${p.id}">${escapeHtml(p.name)}</option>`).join("")
+    : '<option value="">Nenhum produto cadastrado</option>';
+
+  if(current && [...select.options].some(o=>o.value===current)){
+    select.value=current;
+  }
+}
+
+function updateCouponTargetVisibility(){
+  $("couponTargetBox").style.display = $("couponScope").value === "one" ? "block" : "none";
+  refreshCouponProductOptions();
+}
+
+function saveCoupon(){
+  const code=$("couponCode").value.trim().toUpperCase();
+  const type=$("couponType").value;
+  const value=Number($("couponValue").value);
+  const min=Number($("couponMin").value||0);
+  const active=$("couponActive").checked;
+  const scope=$("couponScope").value;
+
+  if(!code){ alert("Digite o código."); return; }
+  if(!value || value<=0){ alert("Digite o desconto."); return; }
+  if(type==="percent" && value>100){ alert("Máximo: 100%."); return; }
+
+  if(coupons.some((c,i)=>String(c.code).toUpperCase()===code && i!==editingCouponIndex)){
+    alert("Esse cupom já existe.");
+    return;
+  }
+
+  let productIds=[];
+  if(scope==="one"){
+    const selectedId=Number($("couponProduct").value);
+    if(!selectedId){ alert("Escolha o tênis do cupom."); return; }
+    productIds=[selectedId];
+  }
+
+  const obj={code,type,value,min,active,productIds};
+
+  if(editingCouponIndex!==null) coupons[editingCouponIndex]=obj;
+  else coupons.push(obj);
+
+  cancelCouponEdit();
+  renderCoupons();
+  alert("Cupom salvo ✅");
+}
+
+function editCoupon(i){
+  const coupon=coupons[i];
+  if(!coupon) return;
+
+  editingCouponIndex=i;
+  $("couponCode").value=coupon.code;
+  $("couponType").value=coupon.type;
+  $("couponValue").value=coupon.value;
+  $("couponMin").value=coupon.min||0;
+  $("couponActive").checked=coupon.active!==false;
+
+  const ids=Array.isArray(coupon.productIds) ? coupon.productIds.map(Number) : [];
+  if(ids.length){
+    $("couponScope").value="one";
+    updateCouponTargetVisibility();
+    $("couponProduct").value=String(ids[0]);
+  }else{
+    $("couponScope").value="all";
+    updateCouponTargetVisibility();
+  }
+
+  $("couponSaveBtn").textContent="Salvar cupom";
+  $("couponCancelBtn").style.display="block";
+}
+
+function deleteCoupon(i){
+  if(confirm("Excluir este cupom?")){
+    coupons.splice(i,1);
+    renderCoupons();
+  }
+}
+
+function cancelCouponEdit(){
+  editingCouponIndex=null;
+  $("couponCode").value="";
+  $("couponType").value="percent";
+  $("couponValue").value="";
+  $("couponMin").value="";
+  $("couponScope").value="all";
+  $("couponActive").checked=true;
+  $("couponSaveBtn").textContent="Adicionar cupom";
+  $("couponCancelBtn").style.display="none";
+  updateCouponTargetVisibility();
+}
+
+function renderCoupons(){
+  $("couponList").innerHTML=coupons.length ? coupons.map((coupon,index)=>{
+    const ids=Array.isArray(coupon.productIds) ? coupon.productIds.map(Number) : [];
+    const target=ids.length
+      ? products.filter(product=>ids.includes(Number(product.id))).map(product=>product.name).join(", ") || "Produto removido"
+      : "Todos os tênis";
+
+    return `
+      <div class="coupon">
+        <div>
+          <span class="pill">${escapeHtml(coupon.code)}</span>
+          <div class="meta">
+            ${coupon.type==="percent" ? coupon.value+"%" : money(coupon.value)} de desconto
+            ${Number(coupon.min||0)>0 ? " • mínimo " + money(coupon.min) : ""}
+            • em: ${escapeHtml(target)}
+            ${coupon.active===false ? " • DESATIVADO" : ""}
+          </div>
+        </div>
+        <div class="mini-actions">
+          <button class="light" onclick="editCoupon(${index})">Editar</button>
+          <button class="danger" onclick="deleteCoupon(${index})">Excluir</button>
+        </div>
+      </div>
+    `;
+  }).join("") : '<p class="small">Nenhum cupom.</p>';
+}
+
+function downloadCatalog(){
+  config.pix=$("pixEnabled").checked;
+  config.card=$("cardEnabled").checked;
+
+  normalizeProducts();
+
+  const text=
+    "window.PRODUTOS = " + JSON.stringify(products,null,2) + ";\n\n" +
+    "window.CUPONS = " + JSON.stringify(coupons,null,2) + ";\n\n" +
+    "window.CONFIG_LOJA = " + JSON.stringify(config,null,2) + ";\n";
+
+  const blob=new Blob([text],{type:"text/javascript;charset=utf-8"});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");
+
+  a.href=url;
+  a.download="produtos.js";
+
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+
+showPreview();
+refreshCouponProductOptions();
+updateCouponTargetVisibility();
+</script>
+</body>
+</html>
