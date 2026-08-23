@@ -154,22 +154,57 @@
     }
     function removeItem(index){cart.splice(index,1);updateCart()}
     function cartSubtotal(){return cart.reduce((s,i)=>s+Number(i.price)*i.qty,0)}
+    function eligibleCouponSubtotal(){
+      if(!activeCoupon) return 0;
+      const ids = Array.isArray(activeCoupon.productIds) ? activeCoupon.productIds.map(Number) : [];
+      if(!ids.length) return cartSubtotal();
+      return cart.reduce((sum,item)=> ids.includes(Number(item.id)) ? sum + Number(item.price)*item.qty : sum, 0);
+    }
+
     function couponDiscount(subtotal){
-      if(!activeCoupon)return 0;
-      if(subtotal<Number(activeCoupon.min||0))return 0;
-      let d=activeCoupon.type==="percent"?subtotal*(Number(activeCoupon.value)/100):Number(activeCoupon.value);
-      return Math.max(0,Math.min(d,subtotal));
+      if(!activeCoupon) return 0;
+      const eligibleSubtotal = eligibleCouponSubtotal();
+      if(eligibleSubtotal <= 0) return 0;
+      if(subtotal < Number(activeCoupon.min || 0)) return 0;
+      let d = activeCoupon.type === "percent"
+        ? eligibleSubtotal * (Number(activeCoupon.value) / 100)
+        : Number(activeCoupon.value);
+      return Math.max(0, Math.min(d, eligibleSubtotal));
     }
 
     function applyCoupon(){
       const input=document.getElementById("couponInput"), msg=document.getElementById("couponMsg");
       const code=input.value.trim().toUpperCase();
       if(!code){activeCoupon=null;msg.textContent="";updateCart();return;}
+
       const found=coupons.find(c=>String(c.code).toUpperCase()===code&&c.active!==false);
       if(!found){activeCoupon=null;msg.className="coupon-msg err";msg.textContent="Cupom inválido ou desativado.";updateCart();return;}
+
       const subtotal=cartSubtotal();
-      if(subtotal<Number(found.min||0)){activeCoupon=null;msg.className="coupon-msg err";msg.textContent=`Compra mínima: ${money(found.min||0)}.`;updateCart();return;}
-      activeCoupon=found;msg.className="coupon-msg ok";msg.textContent=`Cupom ${found.code} aplicado! 🎉`;updateCart();
+      if(subtotal<Number(found.min||0)){
+        activeCoupon=null;msg.className="coupon-msg err";
+        msg.textContent=`Compra mínima: ${money(found.min||0)}.`;
+        updateCart();return;
+      }
+
+      const ids = Array.isArray(found.productIds) ? found.productIds.map(Number) : [];
+      if(ids.length){
+        const hasEligible = cart.some(item => ids.includes(Number(item.id)));
+        if(!hasEligible){
+          activeCoupon=null;msg.className="coupon-msg err";
+          msg.textContent="Esse cupom é exclusivo para outro tênis.";
+          updateCart();return;
+        }
+      }
+
+      activeCoupon=found;msg.className="coupon-msg ok";
+      if(ids.length){
+        const names=products.filter(p=>ids.includes(Number(p.id))).map(p=>p.name);
+        msg.textContent=`Cupom ${found.code} aplicado em: ${names.join(", ")} 🎉`;
+      }else{
+        msg.textContent=`Cupom ${found.code} aplicado! 🎉`;
+      }
+      updateCart();
     }
 
     function renderPayments(){
@@ -210,7 +245,12 @@
       document.getElementById("paymentMsg").textContent="";
       const subtotal=cartSubtotal(), discount=couponDiscount(subtotal), total=Math.max(0,subtotal-discount);
       const lines=cart.map(i=>`• ${i.name} | ${i.line}ª linha | Tam. ${i.size} | ${i.qty}x | ${money(i.price*i.qty)}`).join("\n");
-      const cup=activeCoupon&&discount>0?`\nCupom: ${String(activeCoupon.code).toUpperCase()}\nDesconto: - ${money(discount)}`:"";
+      let cup="";
+      if(activeCoupon&&discount>0){
+        const ids=Array.isArray(activeCoupon.productIds)?activeCoupon.productIds.map(Number):[];
+        const targetNames=ids.length?products.filter(p=>ids.includes(Number(p.id))).map(p=>p.name).join(", "):"Todos os produtos";
+        cup=`\nCupom: ${String(activeCoupon.code).toUpperCase()}\nAplicado em: ${targetNames}\nDesconto: - ${money(discount)}`;
+      }
       const message=`Olá! Quero fazer este pedido na Tênis da Juh 👟💗\n\n${lines}\n\nSubtotal: ${money(subtotal)}${cup}\nTotal: ${money(total)}\nForma de pagamento: ${payment}\n\nGostaria de confirmar a disponibilidade e combinar o pagamento/entrega.`;
       window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`,"_blank");
     }
