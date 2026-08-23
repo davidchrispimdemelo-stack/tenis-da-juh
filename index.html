@@ -1,99 +1,91 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#f8d9df" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f8d9df">
   <title>Tênis da Juh | Seu estilo começa pelos pés</title>
-  <meta name="description" content="Tênis da Juh — modelos de 1ª e 2ª linha. Escolha seu modelo, numeração e finalize o pedido pelo WhatsApp." />
+  <meta name="description" content="Tênis da Juh — modelos de 1ª e 2ª linha. Escolha seu modelo, numeração e finalize o pedido pelo WhatsApp.">
   <style>
-    :root{
-      --rosa:#ef8ea0;--rosa-claro:#fff2f5;--dourado:#c7983f;--marrom:#3b2824;
-      --branco:#fff;--cinza:#7f7471;--sombra:0 12px 30px rgba(86,45,52,.12);
-    }
-    *{box-sizing:border-box}html{scroll-behavior:smooth}
+    :root{--rosa:#ef8ea0;--rosa-claro:#fff2f5;--dourado:#c7983f;--marrom:#3b2824;--branco:#fff;--cinza:#7f7471;--verde:#1fa85b;--sombra:0 12px 30px rgba(86,45,52,.12)}
+    *{box-sizing:border-box} html{scroll-behavior:smooth}
     body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:linear-gradient(180deg,#fff 0%,#fff9fa 100%);color:var(--marrom)}
-    a{text-decoration:none;color:inherit}button,select{font:inherit}.container{width:min(1120px,92%);margin:auto}
+    a{text-decoration:none;color:inherit} button,select,input{font:inherit} .container{width:min(1120px,92%);margin:auto}
     .topbar{background:var(--marrom);color:#fff;font-size:.92rem;text-align:center;padding:8px 14px}
-    header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.93);backdrop-filter:blur(14px);border-bottom:1px solid #f3e6e8}
+    header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.94);backdrop-filter:blur(14px);border-bottom:1px solid #f3e6e8}
     .nav{height:72px;display:flex;align-items:center;justify-content:space-between;gap:18px}
-    .brand{display:flex;align-items:center;gap:10px;font-weight:900}.brand img{width:50px;height:50px;border-radius:50%;object-fit:cover;border:2px solid #f5ccd4}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:900} .brand img{width:50px;height:50px;border-radius:50%;object-fit:cover;border:2px solid #f5ccd4}
     .menu{display:flex;gap:22px;color:#5c4b47;font-weight:700;font-size:.95rem}
     .cart-btn{border:none;background:var(--rosa);color:#fff;font-weight:900;padding:11px 16px;border-radius:999px;cursor:pointer;box-shadow:0 8px 18px rgba(239,142,160,.28)}
-    .hero{padding:56px 0 38px}.hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:34px;align-items:center;background:linear-gradient(135deg,#fff3f6,#fffaf2);border:1px solid #f7dde3;border-radius:32px;padding:42px;box-shadow:var(--sombra);overflow:hidden;position:relative}
+    .hero{padding:56px 0 38px} .hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:34px;align-items:center;background:linear-gradient(135deg,#fff3f6,#fffaf2);border:1px solid #f7dde3;border-radius:32px;padding:42px;box-shadow:var(--sombra);overflow:hidden}
     .eyebrow{color:var(--dourado);font-weight:900;letter-spacing:.09em;text-transform:uppercase;font-size:.8rem}
-    h1{font-size:clamp(2.2rem,5vw,4.8rem);line-height:.98;margin:12px 0 18px}.hero p{font-size:1.1rem;color:#6d5b57;line-height:1.65;max-width:650px}
-    .hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}.btn{border:none;border-radius:14px;padding:14px 18px;font-weight:900;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px}
-    .btn-primary{background:var(--rosa);color:#fff}.btn-secondary{background:#fff;border:1px solid #ead7da;color:var(--marrom)}
-    .hero-card{background:#fff;border-radius:28px;padding:20px;text-align:center;box-shadow:0 16px 36px rgba(85,48,52,.12)}.hero-card img{width:min(330px,100%);border-radius:50%;display:block;margin:auto}
-    section{padding:36px 0}.section-head{display:flex;align-items:end;justify-content:space-between;gap:18px;margin-bottom:20px}h2{font-size:clamp(1.7rem,4vw,2.6rem);margin:0}.section-head p{margin:0;color:var(--cinza)}
-    .filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}.filter{border:1px solid #ecdde0;background:#fff;padding:9px 13px;border-radius:999px;cursor:pointer;font-weight:800;color:#6a5955}.filter.active{background:var(--marrom);color:#fff;border-color:var(--marrom)}
-    .products{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}.product{background:#fff;border:1px solid #f0e3e5;border-radius:24px;overflow:hidden;box-shadow:0 10px 24px rgba(60,40,40,.07)}
-    .product-visual{height:230px;background:linear-gradient(135deg,#fff0f4,#f7eadf);display:grid;place-items:center;position:relative;overflow:hidden}.product-visual img{width:100%;height:100%;object-fit:cover}.placeholder{font-size:86px}
+    h1{font-size:clamp(2.2rem,5vw,4.8rem);line-height:.98;margin:12px 0 18px} .hero p{font-size:1.1rem;color:#6d5b57;line-height:1.65;max-width:650px}
+    .hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px} .btn{border:none;border-radius:14px;padding:14px 18px;font-weight:900;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+    .btn-primary{background:var(--rosa);color:#fff} .btn-secondary{background:#fff;border:1px solid #ead7da;color:var(--marrom)}
+    .hero-card{background:#fff;border-radius:28px;padding:20px;text-align:center;box-shadow:0 16px 36px rgba(85,48,52,.12)} .hero-card img{width:min(330px,100%);border-radius:50%;display:block;margin:auto}
+    section{padding:36px 0} .section-head{display:flex;align-items:end;justify-content:space-between;gap:18px;margin-bottom:20px} h2{font-size:clamp(1.7rem,4vw,2.6rem);margin:0} .section-head p{margin:0;color:var(--cinza)}
+    .filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px} .filter{border:1px solid #ecdde0;background:#fff;padding:9px 13px;border-radius:999px;cursor:pointer;font-weight:800;color:#6a5955} .filter.active{background:var(--marrom);color:#fff;border-color:var(--marrom)}
+    .products{display:grid;grid-template-columns:repeat(3,1fr);gap:20px} .product{background:#fff;border:1px solid #f0e3e5;border-radius:24px;overflow:hidden;box-shadow:0 10px 24px rgba(60,40,40,.07)}
+    .product-visual{height:260px;background:#fff;display:grid;place-items:center;position:relative;overflow:hidden;padding:10px}
+    .product-visual img{width:100%;height:100%;object-fit:contain} .placeholder{font-size:86px}
     .line-tag{position:absolute;top:14px;left:14px;background:#fff;color:var(--marrom);font-size:.75rem;font-weight:900;padding:7px 10px;border-radius:999px;box-shadow:0 5px 14px rgba(0,0,0,.08);z-index:2}
-    .product-body{padding:18px}.product h3{margin:0 0 6px;font-size:1.08rem}.muted{color:var(--cinza);font-size:.9rem}.price{font-size:1.45rem;font-weight:950;margin:14px 0}.row{display:flex;gap:9px;align-items:center}
-    select{flex:1;border:1px solid #eadcde;background:#fff;border-radius:12px;padding:11px;color:#4d3e3a}.add{width:100%;margin-top:12px;background:var(--rosa);color:#fff;border:none;padding:12px;border-radius:12px;font-weight:900;cursor:pointer}
-    .info-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.info{background:#fff;border:1px solid #f0e4e5;border-radius:20px;padding:22px;box-shadow:0 8px 18px rgba(54,37,40,.05)}.info b{display:block;font-size:1.05rem;margin-bottom:7px}.info span{color:var(--cinza);line-height:1.5}
-    footer{margin-top:36px;background:var(--marrom);color:#fff;padding:32px 0}footer .foot{display:flex;justify-content:space-between;gap:24px;align-items:center;flex-wrap:wrap}.small{font-size:.86rem;color:#d6c8c4}
-    .drawer{position:fixed;inset:0;z-index:100;pointer-events:none;background:rgba(30,20,20,0);transition:.2s}.drawer.open{pointer-events:auto;background:rgba(30,20,20,.32)}
-    .panel{position:absolute;right:0;top:0;height:100%;width:min(430px,100%);background:#fff;transform:translateX(100%);transition:.25s;display:flex;flex-direction:column;box-shadow:-18px 0 40px rgba(0,0,0,.12)}.drawer.open .panel{transform:translateX(0)}
-    .panel-head{display:flex;justify-content:space-between;align-items:center;padding:20px;border-bottom:1px solid #eee}.close{border:none;background:#f7eef0;border-radius:10px;width:38px;height:38px;cursor:pointer;font-size:1.2rem}
-    .cart-items{padding:14px 20px;overflow:auto;flex:1}.cart-item{padding:14px 0;border-bottom:1px solid #f1e7e9}.cart-item-top{display:flex;justify-content:space-between;gap:12px}.remove{border:none;background:none;color:#b24f62;font-weight:800;cursor:pointer}
-    .cart-footer{border-top:1px solid #eee;padding:20px}.total{display:flex;justify-content:space-between;font-size:1.25rem;font-weight:950;margin-bottom:14px}.whatsapp{width:100%;background:#20b85a;color:#fff;border:none;border-radius:14px;padding:14px;font-weight:950;cursor:pointer}.notice{font-size:.78rem;color:#8a7772;margin-top:10px;line-height:1.4}.empty{color:#8a7772;text-align:center;padding:50px 0}
-    @media (max-width:850px){.hero-grid{grid-template-columns:1fr;padding:26px}.products{grid-template-columns:repeat(2,1fr)}.info-grid{grid-template-columns:1fr}.menu{display:none}.hero-card img{width:260px}}
-    @media (max-width:560px){.topbar{font-size:.8rem}.nav{height:66px}.brand span{display:none}.hero{padding-top:26px}.hero-grid{border-radius:22px}.products{grid-template-columns:1fr}.section-head{align-items:start;flex-direction:column}.cart-btn{padding:10px 13px}}
+    .product-body{padding:18px} .product h3{margin:0 0 6px;font-size:1.08rem} .muted{color:var(--cinza);font-size:.9rem} .price{font-size:1.45rem;font-weight:950;margin:14px 0} .row{display:flex;gap:9px;align-items:center}
+    select{flex:1;border:1px solid #eadcde;background:#fff;border-radius:12px;padding:11px;color:#4d3e3a} .add{width:100%;margin-top:12px;background:var(--rosa);color:#fff;border:none;padding:12px;border-radius:12px;font-weight:900;cursor:pointer}
+    .info-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px} .info{background:#fff;border:1px solid #f0e4e5;border-radius:20px;padding:22px;box-shadow:0 8px 18px rgba(54,37,40,.05)} .info b{display:block;font-size:1.05rem;margin-bottom:7px} .info span{color:var(--cinza);line-height:1.5}
+    footer{margin-top:36px;background:var(--marrom);color:#fff;padding:32px 0} footer .foot{display:flex;justify-content:space-between;gap:24px;align-items:center;flex-wrap:wrap} .small{font-size:.86rem;color:#d6c8c4}
+    .drawer{position:fixed;inset:0;z-index:100;pointer-events:none;background:rgba(30,20,20,0);transition:.2s} .drawer.open{pointer-events:auto;background:rgba(30,20,20,.32)}
+    .panel{position:absolute;right:0;top:0;height:100%;width:min(460px,100%);background:#fff;transform:translateX(100%);transition:.25s;display:flex;flex-direction:column;box-shadow:-18px 0 40px rgba(0,0,0,.12)} .drawer.open .panel{transform:translateX(0)}
+    .panel-head{display:flex;justify-content:space-between;align-items:center;padding:20px;border-bottom:1px solid #eee} .close{border:none;background:#f7eef0;border-radius:10px;width:38px;height:38px;cursor:pointer;font-size:1.2rem}
+    .cart-items{padding:14px 20px;overflow:auto;flex:1} .cart-item{padding:14px 0;border-bottom:1px solid #f1e7e9} .cart-item-top{display:flex;justify-content:space-between;gap:12px} .remove{border:none;background:none;color:#b24f62;font-weight:800;cursor:pointer}
+    .cart-footer{border-top:1px solid #eee;padding:20px;max-height:58vh;overflow:auto}
+    .box{background:#fff7f9;border:1px solid #efdde2;border-radius:14px;padding:13px;margin-bottom:12px}
+    .box-title{font-weight:950;margin-bottom:9px}
+    .coupon-row{display:flex;gap:8px} .coupon-row input{flex:1;min-width:0;border:1px solid #e3d2d6;border-radius:11px;padding:11px;text-transform:uppercase} .coupon-row button{border:none;background:var(--marrom);color:#fff;border-radius:11px;padding:0 13px;font-weight:900;cursor:pointer}
+    .coupon-msg{font-size:.82rem;margin-top:8px;line-height:1.35} .ok{color:#167a3a} .err{color:#b33c55}
+    .payment-option{display:flex;align-items:center;gap:10px;padding:11px;background:#fff;border:1px solid #eadde0;border-radius:12px;margin-top:8px;cursor:pointer} .payment-option input{accent-color:var(--rosa)}
+    .summary-line{display:flex;justify-content:space-between;gap:12px;margin:6px 0;color:#6f5d59;font-size:.92rem} .discount{color:#188143;font-weight:800}
+    .total{display:flex;justify-content:space-between;font-size:1.25rem;font-weight:950;margin:12px 0} .whatsapp{width:100%;background:#20b85a;color:#fff;border:none;border-radius:14px;padding:14px;font-weight:950;cursor:pointer} .notice{font-size:.78rem;color:#8a7772;margin-top:10px;line-height:1.4} .empty{color:#8a7772;text-align:center;padding:50px 0}
+    @media(max-width:850px){.hero-grid{grid-template-columns:1fr;padding:26px}.products{grid-template-columns:repeat(2,1fr)}.info-grid{grid-template-columns:1fr}.menu{display:none}}
+    @media(max-width:560px){.topbar{font-size:.8rem}.nav{height:66px}.brand span{display:none}.hero{padding-top:26px}.hero-grid{border-radius:22px}.products{grid-template-columns:1fr}.section-head{align-items:start;flex-direction:column}.cart-btn{padding:10px 13px}}
   </style>
 </head>
 <body>
   <div class="topbar">💗 Pedidos pelo WhatsApp • Consulte disponibilidade, tamanhos e entrega</div>
-  <header>
-    <div class="container nav">
-      <a class="brand" href="#inicio"><img src="logo-tenis-da-juh.png" alt="Logo Tênis da Juh"><span>Tênis da Juh</span></a>
-      <nav class="menu"><a href="#inicio">Início</a><a href="#catalogo">Catálogo</a><a href="#como-funciona">Como comprar</a></nav>
-      <button class="cart-btn" onclick="toggleCart(true)">🛒 Carrinho <span id="cartCount">0</span></button>
-    </div>
-  </header>
+  <header><div class="container nav">
+    <a class="brand" href="#inicio"><img src="logo-tenis-da-juh.png" alt="Logo Tênis da Juh"><span>Tênis da Juh</span></a>
+    <nav class="menu"><a href="#inicio">Início</a><a href="#catalogo">Catálogo</a><a href="#como-funciona">Como comprar</a></nav>
+    <button class="cart-btn" onclick="toggleCart(true)">🛒 Carrinho <span id="cartCount">0</span></button>
+  </div></header>
 
   <main>
-    <section class="hero" id="inicio">
-      <div class="container">
-        <div class="hero-grid">
-          <div>
-            <div class="eyebrow">Tênis 1ª e 2ª linha</div>
-            <h1>Seu próximo tênis favorito está aqui.</h1>
-            <p>Escolha o modelo, selecione a numeração e monte seu pedido. No final, é só enviar tudo pronto pelo WhatsApp.</p>
-            <div class="hero-actions"><a class="btn btn-primary" href="#catalogo">Ver catálogo 👟</a><a class="btn btn-secondary" href="#como-funciona">Como funciona</a></div>
-          </div>
-          <div class="hero-card"><img src="logo-tenis-da-juh.png" alt="Tênis da Juh"><strong>Estilo bonito por um preço que cabe no bolso 💕</strong></div>
-        </div>
+    <section class="hero" id="inicio"><div class="container"><div class="hero-grid">
+      <div>
+        <div class="eyebrow">Tênis 1ª e 2ª linha</div>
+        <h1>Seu próximo tênis favorito está aqui.</h1>
+        <p>Escolha o modelo, selecione a numeração e monte seu pedido. No final, é só enviar tudo pronto pelo WhatsApp.</p>
+        <div class="hero-actions"><a class="btn btn-primary" href="#catalogo">Ver catálogo 👟</a><a class="btn btn-secondary" href="#como-funciona">Como funciona</a></div>
       </div>
-    </section>
+      <div class="hero-card"><img src="logo-tenis-da-juh.png" alt="Tênis da Juh"><strong>Estilo bonito por um preço que cabe no bolso 💕</strong></div>
+    </div></div></section>
 
-    <section id="catalogo">
-      <div class="container">
-        <div class="section-head">
-          <div><div class="eyebrow">Catálogo</div><h2>Escolha seu modelo</h2></div>
-          <p>Escolha a numeração antes de adicionar ao carrinho.</p>
-        </div>
-        <div class="filters">
-          <button class="filter active" data-filter="todos">Todos</button>
-          <button class="filter" data-filter="1">1ª linha</button>
-          <button class="filter" data-filter="2">2ª linha</button>
-        </div>
-        <div class="products" id="products"></div>
+    <section id="catalogo"><div class="container">
+      <div class="section-head"><div><div class="eyebrow">Catálogo</div><h2>Escolha seu modelo</h2></div><p>Escolha a numeração antes de adicionar ao carrinho.</p></div>
+      <div class="filters">
+        <button class="filter active" data-filter="todos">Todos</button>
+        <button class="filter" data-filter="1">1ª linha</button>
+        <button class="filter" data-filter="2">2ª linha</button>
       </div>
-    </section>
+      <div class="products" id="products"></div>
+    </div></section>
 
-    <section id="como-funciona">
-      <div class="container">
-        <div class="section-head"><div><div class="eyebrow">Como comprar</div><h2>Pedido simples e rápido</h2></div></div>
-        <div class="info-grid">
-          <div class="info"><b>1. Escolha 👟</b><span>Veja o catálogo e selecione o tamanho desejado.</span></div>
-          <div class="info"><b>2. Adicione 🛒</b><span>Coloque os modelos desejados no carrinho.</span></div>
-          <div class="info"><b>3. Envie 📲</b><span>Finalize pelo WhatsApp e combine pagamento, entrega ou retirada.</span></div>
-        </div>
+    <section id="como-funciona"><div class="container">
+      <div class="section-head"><div><div class="eyebrow">Como comprar</div><h2>Pedido simples e rápido</h2></div></div>
+      <div class="info-grid">
+        <div class="info"><b>1. Escolha 👟</b><span>Veja o catálogo e selecione o tamanho desejado.</span></div>
+        <div class="info"><b>2. Adicione 🛒</b><span>Coloque os modelos desejados no carrinho.</span></div>
+        <div class="info"><b>3. Envie 📲</b><span>Escolha a forma de pagamento e finalize pelo WhatsApp.</span></div>
       </div>
-    </section>
+    </div></section>
   </main>
 
   <footer><div class="container foot"><div><strong>Tênis da Juh</strong><div class="small">Seu estilo começa pelos pés 👟💗</div></div><div class="small">© <span id="year"></span> Tênis da Juh</div></div></footer>
@@ -102,95 +94,132 @@
     <aside class="panel">
       <div class="panel-head"><div><strong style="font-size:1.2rem">Seu carrinho</strong><div class="muted">Confira antes de enviar</div></div><button class="close" onclick="toggleCart(false)">✕</button></div>
       <div class="cart-items" id="cartItems"></div>
-      <div class="cart-footer"><div class="total"><span>Total</span><span id="cartTotal">R$ 0,00</span></div><button class="whatsapp" onclick="checkoutWhatsApp()">Finalizar pelo WhatsApp 💬</button><div class="notice">O site não realiza cobrança. O pagamento e a entrega são combinados diretamente pelo WhatsApp.</div></div>
+      <div class="cart-footer">
+        <div class="box">
+          <div class="box-title">Cupom de desconto 🎟️</div>
+          <div class="coupon-row"><input id="couponInput" placeholder="Ex.: JUH10"><button onclick="applyCoupon()">Aplicar</button></div>
+          <div id="couponMsg" class="coupon-msg"></div>
+        </div>
+
+        <div class="box">
+          <div class="box-title">Forma de pagamento 💳</div>
+          <div id="paymentOptions"></div>
+          <div id="paymentMsg" class="coupon-msg err"></div>
+        </div>
+
+        <div class="summary-line"><span>Subtotal</span><span id="cartSubtotal">R$ 0,00</span></div>
+        <div class="summary-line discount" id="discountRow" style="display:none"><span>Desconto</span><span id="cartDiscount">- R$ 0,00</span></div>
+        <div class="total"><span>Total</span><span id="cartTotal">R$ 0,00</span></div>
+        <button class="whatsapp" onclick="checkoutWhatsApp()">Finalizar pelo WhatsApp 💬</button>
+        <div class="notice">O site não cobra automaticamente. A forma de pagamento escolhida é enviada junto com o pedido para confirmação pelo WhatsApp.</div>
+      </div>
     </aside>
   </div>
 
   <script src="produtos.js"></script>
   <script>
-    // TROQUE APENAS O NÚMERO ABAIXO.
     const WHATSAPP_NUMBER = "5511969637389";
     const products = Array.isArray(window.PRODUTOS) ? window.PRODUTOS : [];
+    const coupons = Array.isArray(window.CUPONS) ? window.CUPONS : [];
+    const storeConfig = window.CONFIG_LOJA || {pix:true, card:true};
     let cart = [];
     let currentFilter = "todos";
+    let activeCoupon = null;
 
     const money = value => Number(value).toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
+    const escapeHtml = v => String(v).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
 
     function renderProducts(){
       const box = document.getElementById("products");
       const visible = products.filter(p => currentFilter === "todos" || String(p.line) === currentFilter);
-      if(!visible.length){ box.innerHTML = '<div class="empty">Nenhum tênis cadastrado.</div>'; return; }
-      box.innerHTML = visible.map(p => `
+      if(!visible.length){box.innerHTML='<div class="empty">Nenhum tênis cadastrado.</div>';return;}
+      box.innerHTML = visible.map(p=>`
         <article class="product">
-          <div class="product-visual">
-            <span class="line-tag">${p.line}ª linha</span>
-            ${p.image ? `<img src="${p.image}" alt="${escapeHtml(p.name)}">` : `<span class="placeholder">👟</span>`}
-          </div>
+          <div class="product-visual"><span class="line-tag">${p.line}ª linha</span>${p.image?`<img src="${p.image}" alt="${escapeHtml(p.name)}">`:`<span class="placeholder">👟</span>`}</div>
           <div class="product-body">
-            <h3>${escapeHtml(p.name)}</h3>
-            <div class="muted">Consulte disponibilidade</div>
+            <h3>${escapeHtml(p.name)}</h3><div class="muted">Consulte disponibilidade</div>
             <div class="price">${money(p.price)}</div>
-            <div class="row">
-              <select id="size-${p.id}" aria-label="Escolha o tamanho">
-                ${(p.sizes || []).map(s => `<option value="${s}">Tam. ${s}</option>`).join("")}
-              </select>
-            </div>
+            <div class="row"><select id="size-${p.id}">${(p.sizes||[]).map(s=>`<option value="${s}">Tam. ${s}</option>`).join("")}</select></div>
             <button class="add" onclick="addToCart(${p.id})">Adicionar ao carrinho</button>
           </div>
-        </article>
-      `).join("");
+        </article>`).join("");
     }
-
-    function escapeHtml(v){ return String(v).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
 
     function addToCart(id){
-      const p = products.find(x => Number(x.id) === Number(id));
-      const sizeEl = document.getElementById(`size-${id}`);
-      const size = sizeEl ? sizeEl.value : "";
-      const existing = cart.find(i => Number(i.id) === Number(id) && String(i.size) === String(size));
-      if(existing) existing.qty++;
-      else cart.push({...p, size, qty:1});
+      const p=products.find(x=>Number(x.id)===Number(id)); if(!p)return;
+      const el=document.getElementById(`size-${id}`); const size=el?el.value:"";
+      const existing=cart.find(i=>Number(i.id)===Number(id)&&String(i.size)===String(size));
+      if(existing)existing.qty++; else cart.push({...p,size,qty:1});
       updateCart();
     }
-
-    function removeItem(index){ cart.splice(index,1); updateCart(); }
-    function updateCart(){
-      const count = cart.reduce((sum,i)=>sum+i.qty,0);
-      document.getElementById("cartCount").textContent = count;
-      const items = document.getElementById("cartItems");
-      if(!cart.length){ items.innerHTML = `<div class="empty">Seu carrinho está vazio 🛒</div>`; }
-      else{
-        items.innerHTML = cart.map((i,index)=>`
-          <div class="cart-item"><div class="cart-item-top"><div><strong>${escapeHtml(i.name)}</strong>
-          <div class="muted">${i.line}ª linha • Tam. ${i.size} • Qtd. ${i.qty}</div>
-          <div style="margin-top:5px;font-weight:900">${money(i.price*i.qty)}</div></div>
-          <button class="remove" onclick="removeItem(${index})">Remover</button></div></div>
-        `).join("");
-      }
-      document.getElementById("cartTotal").textContent = money(cart.reduce((sum,i)=>sum+i.price*i.qty,0));
+    function removeItem(index){cart.splice(index,1);updateCart()}
+    function cartSubtotal(){return cart.reduce((s,i)=>s+Number(i.price)*i.qty,0)}
+    function couponDiscount(subtotal){
+      if(!activeCoupon)return 0;
+      if(subtotal<Number(activeCoupon.min||0))return 0;
+      let d=activeCoupon.type==="percent"?subtotal*(Number(activeCoupon.value)/100):Number(activeCoupon.value);
+      return Math.max(0,Math.min(d,subtotal));
     }
 
-    function toggleCart(open){ document.getElementById("drawer").classList.toggle("open",open); }
-    function backdropClose(e){ if(e.target.id === "drawer") toggleCart(false); }
+    function applyCoupon(){
+      const input=document.getElementById("couponInput"), msg=document.getElementById("couponMsg");
+      const code=input.value.trim().toUpperCase();
+      if(!code){activeCoupon=null;msg.textContent="";updateCart();return;}
+      const found=coupons.find(c=>String(c.code).toUpperCase()===code&&c.active!==false);
+      if(!found){activeCoupon=null;msg.className="coupon-msg err";msg.textContent="Cupom inválido ou desativado.";updateCart();return;}
+      const subtotal=cartSubtotal();
+      if(subtotal<Number(found.min||0)){activeCoupon=null;msg.className="coupon-msg err";msg.textContent=`Compra mínima: ${money(found.min||0)}.`;updateCart();return;}
+      activeCoupon=found;msg.className="coupon-msg ok";msg.textContent=`Cupom ${found.code} aplicado! 🎉`;updateCart();
+    }
+
+    function renderPayments(){
+      const box=document.getElementById("paymentOptions");
+      const options=[];
+      if(storeConfig.pix!==false) options.push(`<label class="payment-option"><input type="radio" name="payment" value="Pix"> <span><b>Pix</b><br><small>Pagamento via Pix</small></span></label>`);
+      if(storeConfig.card!==false) options.push(`<label class="payment-option"><input type="radio" name="payment" value="Cartão"> <span><b>Cartão</b><br><small>Combine os detalhes pelo WhatsApp</small></span></label>`);
+      box.innerHTML=options.length?options.join(""):`<div class="muted">Nenhuma forma de pagamento disponível no momento.</div>`;
+    }
+
+    function selectedPayment(){
+      const el=document.querySelector('input[name="payment"]:checked');
+      return el?el.value:"";
+    }
+
+    function updateCart(){
+      document.getElementById("cartCount").textContent=cart.reduce((s,i)=>s+i.qty,0);
+      const items=document.getElementById("cartItems");
+      items.innerHTML=cart.length?cart.map((i,index)=>`
+        <div class="cart-item"><div class="cart-item-top"><div><strong>${escapeHtml(i.name)}</strong>
+        <div class="muted">${i.line}ª linha • Tam. ${i.size} • Qtd. ${i.qty}</div>
+        <div style="margin-top:5px;font-weight:900">${money(i.price*i.qty)}</div></div>
+        <button class="remove" onclick="removeItem(${index})">Remover</button></div></div>`).join(""):`<div class="empty">Seu carrinho está vazio 🛒</div>`;
+
+      const subtotal=cartSubtotal();
+      if(activeCoupon&&subtotal<Number(activeCoupon.min||0))activeCoupon=null;
+      const discount=couponDiscount(subtotal), total=Math.max(0,subtotal-discount);
+      document.getElementById("cartSubtotal").textContent=money(subtotal);
+      document.getElementById("cartDiscount").textContent="- "+money(discount);
+      document.getElementById("discountRow").style.display=discount>0?"flex":"none";
+      document.getElementById("cartTotal").textContent=money(total);
+    }
 
     function checkoutWhatsApp(){
-      if(!cart.length){ alert("Adicione pelo menos um produto ao carrinho."); return; }
-      if(WHATSAPP_NUMBER === "5511999999999"){ alert("Troque o número do WhatsApp no arquivo index.html."); return; }
-      const total = cart.reduce((sum,i)=>sum+i.price*i.qty,0);
-      const lines = cart.map(i => `• ${i.name} | ${i.line}ª linha | Tam. ${i.size} | ${i.qty}x | ${money(i.price*i.qty)}`).join("\n");
-      const message = `Olá! Quero fazer este pedido na Tênis da Juh 👟💗\n\n${lines}\n\nTotal: ${money(total)}\n\nGostaria de confirmar a disponibilidade e combinar pagamento/entrega.`;
-      window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`,'_blank');
+      if(!cart.length){alert("Adicione pelo menos um produto ao carrinho.");return;}
+      const payment=selectedPayment();
+      if(!payment){document.getElementById("paymentMsg").textContent="Escolha Pix ou Cartão antes de finalizar.";return;}
+      document.getElementById("paymentMsg").textContent="";
+      const subtotal=cartSubtotal(), discount=couponDiscount(subtotal), total=Math.max(0,subtotal-discount);
+      const lines=cart.map(i=>`• ${i.name} | ${i.line}ª linha | Tam. ${i.size} | ${i.qty}x | ${money(i.price*i.qty)}`).join("\n");
+      const cup=activeCoupon&&discount>0?`\nCupom: ${String(activeCoupon.code).toUpperCase()}\nDesconto: - ${money(discount)}`:"";
+      const message=`Olá! Quero fazer este pedido na Tênis da Juh 👟💗\n\n${lines}\n\nSubtotal: ${money(subtotal)}${cup}\nTotal: ${money(total)}\nForma de pagamento: ${payment}\n\nGostaria de confirmar a disponibilidade e combinar o pagamento/entrega.`;
+      window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`,"_blank");
     }
 
-    document.querySelectorAll(".filter").forEach(btn=>{
-      btn.addEventListener("click",()=>{
-        document.querySelectorAll(".filter").forEach(b=>b.classList.remove("active"));
-        btn.classList.add("active"); currentFilter = btn.dataset.filter; renderProducts();
-      });
-    });
-
-    document.getElementById("year").textContent = new Date().getFullYear();
-    renderProducts(); updateCart();
+    function toggleCart(open){document.getElementById("drawer").classList.toggle("open",open)}
+    function backdropClose(e){if(e.target.id==="drawer")toggleCart(false)}
+    document.querySelectorAll(".filter").forEach(btn=>btn.addEventListener("click",()=>{document.querySelectorAll(".filter").forEach(b=>b.classList.remove("active"));btn.classList.add("active");currentFilter=btn.dataset.filter;renderProducts()}));
+    document.getElementById("year").textContent=new Date().getFullYear();
+    renderProducts();renderPayments();updateCart();
   </script>
 </body>
 </html>
