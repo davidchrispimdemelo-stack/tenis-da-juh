@@ -25,6 +25,16 @@
     .hero-card{background:#fff;border-radius:28px;padding:20px;text-align:center;box-shadow:0 16px 36px rgba(85,48,52,.12)} .hero-card img{width:min(330px,100%);border-radius:50%;display:block;margin:auto}
     section{padding:36px 0} .section-head{display:flex;align-items:end;justify-content:space-between;gap:18px;margin-bottom:20px} h2{font-size:clamp(1.7rem,4vw,2.6rem);margin:0} .section-head p{margin:0;color:var(--cinza)}
     .filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px} .filter{border:1px solid #ecdde0;background:#fff;padding:9px 13px;border-radius:999px;cursor:pointer;font-weight:800;color:#6a5955} .filter.active{background:var(--marrom);color:#fff;border-color:var(--marrom)}
+    .catalog-tools{display:grid;grid-template-columns:1.4fr .7fr auto;gap:10px;margin-bottom:14px}
+    .search-box,.size-filter{width:100%;border:1px solid #eadcde;background:#fff;border-radius:14px;padding:12px 14px;color:#4d3e3a;outline:none}
+    .search-box:focus,.size-filter:focus{border-color:#e4a2af;box-shadow:0 0 0 3px rgba(239,142,160,.12)}
+    .clear-filters{border:1px solid #ecdde0;background:#fff;color:#6a5955;border-radius:14px;padding:0 14px;font-weight:850;cursor:pointer}
+    .results-count{font-size:.86rem;color:var(--cinza);margin:-4px 0 18px}
+    .delivery-card{background:linear-gradient(135deg,#fff6f8,#fffaf2);border:1px solid #f1dce1;border-radius:26px;padding:28px;display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center;box-shadow:0 10px 24px rgba(60,40,40,.06)}
+    .delivery-icon{width:62px;height:62px;border-radius:18px;background:#fff;display:grid;place-items:center;font-size:30px;box-shadow:0 8px 20px rgba(70,45,50,.08)}
+    .delivery-card h3{margin:0 0 7px;font-size:1.35rem}.delivery-card p{margin:0;color:var(--cinza);line-height:1.55}
+    .whatsapp-float{position:fixed;right:22px;bottom:22px;z-index:90;width:58px;height:58px;border-radius:50%;background:#20b85a;color:#fff;display:grid;place-items:center;font-size:29px;box-shadow:0 12px 28px rgba(32,184,90,.35);border:3px solid #fff;transition:.2s transform}
+    .whatsapp-float:hover{transform:translateY(-3px) scale(1.03)}
     .products{display:grid;grid-template-columns:repeat(3,1fr);gap:20px} .product{background:#fff;border:1px solid #f0e3e5;border-radius:24px;overflow:hidden;box-shadow:0 10px 24px rgba(60,40,40,.07)}
     .product-visual{height:260px;background:#fff;display:grid;place-items:center;position:relative;overflow:hidden;padding:10px}
     .product-visual img{width:100%;height:100%;object-fit:contain} .placeholder{font-size:86px}
@@ -45,15 +55,15 @@
     .payment-option{display:flex;align-items:center;gap:10px;padding:11px;background:#fff;border:1px solid #eadde0;border-radius:12px;margin-top:8px;cursor:pointer} .payment-option input{accent-color:var(--rosa)}
     .summary-line{display:flex;justify-content:space-between;gap:12px;margin:6px 0;color:#6f5d59;font-size:.92rem} .discount{color:#188143;font-weight:800}
     .total{display:flex;justify-content:space-between;font-size:1.25rem;font-weight:950;margin:12px 0} .whatsapp{width:100%;background:#20b85a;color:#fff;border:none;border-radius:14px;padding:14px;font-weight:950;cursor:pointer} .notice{font-size:.78rem;color:#8a7772;margin-top:10px;line-height:1.4} .empty{color:#8a7772;text-align:center;padding:50px 0}
-    @media(max-width:850px){.hero-grid{grid-template-columns:1fr;padding:26px}.products{grid-template-columns:repeat(2,1fr)}.info-grid{grid-template-columns:1fr}.menu{display:none}}
-    @media(max-width:560px){.topbar{font-size:.8rem}.nav{height:66px}.brand span{display:none}.hero{padding-top:26px}.hero-grid{border-radius:22px}.products{grid-template-columns:1fr}.section-head{align-items:start;flex-direction:column}.cart-btn{padding:10px 13px}}
+    @media(max-width:850px){.hero-grid{grid-template-columns:1fr;padding:26px}.products{grid-template-columns:repeat(2,1fr)}.info-grid{grid-template-columns:1fr}.menu{display:none}.catalog-tools{grid-template-columns:1fr 1fr}.clear-filters{grid-column:1/-1;padding:11px}.delivery-card{grid-template-columns:auto 1fr}}
+    @media(max-width:560px){.topbar{font-size:.8rem}.nav{height:66px}.brand span{display:none}.hero{padding-top:26px}.hero-grid{border-radius:22px}.products{grid-template-columns:1fr}.section-head{align-items:start;flex-direction:column}.cart-btn{padding:10px 13px}.catalog-tools{grid-template-columns:1fr}.clear-filters{grid-column:auto}.delivery-card{grid-template-columns:1fr;text-align:center}.delivery-icon{margin:auto}.whatsapp-float{right:16px;bottom:16px;width:54px;height:54px}}
   </style>
 </head>
 <body>
   <div class="topbar">💗 Pedidos pelo WhatsApp • Consulte disponibilidade, tamanhos e entrega</div>
   <header><div class="container nav">
     <a class="brand" href="#inicio"><img src="logo-tenis-da-juh.png" alt="Logo Tênis da Juh"><span>Tênis da Juh</span></a>
-    <nav class="menu"><a href="#inicio">Início</a><a href="#catalogo">Catálogo</a><a href="#como-funciona">Como comprar</a></nav>
+    <nav class="menu"><a href="#inicio">Início</a><a href="#catalogo">Catálogo</a><a href="#entrega">Entrega</a><a href="#como-funciona">Como comprar</a></nav>
     <button class="cart-btn" onclick="toggleCart(true)">🛒 Carrinho <span id="cartCount">0</span></button>
   </div></header>
 
@@ -70,13 +80,37 @@
 
     <section id="catalogo"><div class="container">
       <div class="section-head"><div><div class="eyebrow">Catálogo</div><h2>Escolha seu modelo</h2></div><p>Escolha a numeração antes de adicionar ao carrinho.</p></div>
+      <div class="catalog-tools">
+        <input class="search-box" id="productSearch" type="search" placeholder="🔎 Buscar tênis pelo nome..." autocomplete="off">
+        <select class="size-filter" id="sizeFilter" aria-label="Filtrar por tamanho">
+          <option value="">Todos os tamanhos</option>
+        </select>
+        <button class="clear-filters" type="button" onclick="clearCatalogFilters()">Limpar filtros</button>
+      </div>
+
       <div class="filters">
         <button class="filter active" data-filter="todos">Todos</button>
         <button class="filter" data-filter="1">1ª linha</button>
         <button class="filter" data-filter="2">2ª linha</button>
       </div>
+
+      <div class="results-count" id="resultsCount"></div>
       <div class="products" id="products"></div>
     </div></section>
+
+
+    <section id="entrega"><div class="container">
+      <div class="section-head">
+        <div><div class="eyebrow">Área de entrega</div><h2>Entregas em Guarulhos 📍</h2></div>
+      </div>
+      <div class="delivery-card">
+        <div class="delivery-icon">🛵</div>
+        <div>
+          <h3>Entregamos somente em Guarulhos/SP</h3>
+          <p>Atendemos pedidos com entrega dentro de Guarulhos. O valor da entrega, prazo e disponibilidade para o seu bairro são confirmados pelo WhatsApp antes do pagamento.</p>
+        </div>
+      </div>
+    </section>
 
     <section id="como-funciona"><div class="container">
       <div class="section-head"><div><div class="eyebrow">Como comprar</div><h2>Pedido simples e rápido</h2></div></div>
@@ -116,6 +150,9 @@
     </aside>
   </div>
 
+
+  <a class="whatsapp-float" id="whatsappFloat" href="#" aria-label="Falar com a Tênis da Juh pelo WhatsApp" title="Falar no WhatsApp" onclick="openWhatsAppFloat(event)">💬</a>
+
   <script src="produtos.js"></script>
   <script>
     const WHATSAPP_NUMBER = "5511969637389";
@@ -124,15 +161,40 @@
     const storeConfig = window.CONFIG_LOJA || {pix:true, card:true};
     let cart = [];
     let currentFilter = "todos";
+    let currentSearch = "";
+    let currentSize = "";
     let activeCoupon = null;
 
     const money = value => Number(value).toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
     const escapeHtml = v => String(v).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
 
+    function populateSizeFilter(){
+      const select = document.getElementById("sizeFilter");
+      const sizes = [...new Set(products.flatMap(p => Array.isArray(p.sizes) ? p.sizes.map(String) : []))]
+        .sort((a,b)=>Number(a)-Number(b));
+
+      select.innerHTML = `<option value="">Todos os tamanhos</option>` +
+        sizes.map(s=>`<option value="${escapeHtml(s)}">Tamanho ${escapeHtml(s)}</option>`).join("");
+    }
+
     function renderProducts(){
       const box = document.getElementById("products");
-      const visible = products.filter(p => currentFilter === "todos" || String(p.line) === currentFilter);
-      if(!visible.length){box.innerHTML='<div class="empty">Nenhum tênis cadastrado.</div>';return;}
+
+      const visible = products.filter(p => {
+        const matchesLine = currentFilter === "todos" || String(p.line) === currentFilter;
+        const matchesName = String(p.name || "").toLocaleLowerCase("pt-BR").includes(currentSearch);
+        const matchesSize = !currentSize || (Array.isArray(p.sizes) && p.sizes.map(String).includes(currentSize));
+        return matchesLine && matchesName && matchesSize;
+      });
+
+      document.getElementById("resultsCount").textContent =
+        visible.length === 1 ? "1 modelo encontrado" : `${visible.length} modelos encontrados`;
+
+      if(!visible.length){
+        box.innerHTML='<div class="empty">Nenhum tênis encontrado com esses filtros. 👟</div>';
+        return;
+      }
+
       box.innerHTML = visible.map(p=>`
         <article class="product">
           <div class="product-visual"><span class="line-tag">${p.line}ª linha</span>${p.image?`<img src="${p.image}" alt="${escapeHtml(p.name)}">`:`<span class="placeholder">👟</span>`}</div>
@@ -143,6 +205,18 @@
             <button class="add" onclick="addToCart(${p.id})">Adicionar ao carrinho</button>
           </div>
         </article>`).join("");
+    }
+
+    function clearCatalogFilters(){
+      currentSearch = "";
+      currentSize = "";
+      currentFilter = "todos";
+
+      document.getElementById("productSearch").value = "";
+      document.getElementById("sizeFilter").value = "";
+      document.querySelectorAll(".filter").forEach(b=>b.classList.toggle("active", b.dataset.filter === "todos"));
+
+      renderProducts();
     }
 
     function addToCart(id){
@@ -255,11 +329,36 @@
       window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`,"_blank");
     }
 
+    function openWhatsAppFloat(event){
+      event.preventDefault();
+      const message = "Olá! Vim pelo site da Tênis da Juh e gostaria de tirar uma dúvida. 👟💗";
+      window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`,"_blank");
+    }
+
     function toggleCart(open){document.getElementById("drawer").classList.toggle("open",open)}
     function backdropClose(e){if(e.target.id==="drawer")toggleCart(false)}
-    document.querySelectorAll(".filter").forEach(btn=>btn.addEventListener("click",()=>{document.querySelectorAll(".filter").forEach(b=>b.classList.remove("active"));btn.classList.add("active");currentFilter=btn.dataset.filter;renderProducts()}));
+    document.querySelectorAll(".filter").forEach(btn=>btn.addEventListener("click",()=>{
+      document.querySelectorAll(".filter").forEach(b=>b.classList.remove("active"));
+      btn.classList.add("active");
+      currentFilter=btn.dataset.filter;
+      renderProducts();
+    }));
+
+    document.getElementById("productSearch").addEventListener("input",e=>{
+      currentSearch=e.target.value.trim().toLocaleLowerCase("pt-BR");
+      renderProducts();
+    });
+
+    document.getElementById("sizeFilter").addEventListener("change",e=>{
+      currentSize=e.target.value;
+      renderProducts();
+    });
+
     document.getElementById("year").textContent=new Date().getFullYear();
-    renderProducts();renderPayments();updateCart();
+    populateSizeFilter();
+    renderProducts();
+    renderPayments();
+    updateCart();
   </script>
 </body>
 </html>
