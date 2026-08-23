@@ -109,7 +109,7 @@
   <script src="produtos.js"></script>
   <script>
     // TROQUE APENAS O NÚMERO ABAIXO.
-    const WHATSAPP_NUMBER = "5511999999999";
+    const WHATSAPP_NUMBER = "5511969637389";
     const products = Array.isArray(window.PRODUTOS) ? window.PRODUTOS : [];
     let cart = [];
     let currentFilter = "todos";
@@ -175,7 +175,7 @@
 
     function checkoutWhatsApp(){
       if(!cart.length){ alert("Adicione pelo menos um produto ao carrinho."); return; }
-      if(WHATSAPP_NUMBER === "5511999999999"){ alert("Troque o número do WhatsApp no arquivo index.html."); return; }
+      if(WHATSAPP_NUMBER === "5511969637389"){ alert("Troque o número do WhatsApp no arquivo index.html."); return; }
       const total = cart.reduce((sum,i)=>sum+i.price*i.qty,0);
       const lines = cart.map(i => `• ${i.name} | ${i.line}ª linha | Tam. ${i.size} | ${i.qty}x | ${money(i.price*i.qty)}`).join("\n");
       const message = `Olá! Quero fazer este pedido na Tênis da Juh 👟💗\n\n${lines}\n\nTotal: ${money(total)}\n\nGostaria de confirmar a disponibilidade e combinar pagamento/entrega.`;
