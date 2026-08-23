@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#f8d9df">
   <title>Tênis da Juh | Seu estilo começa pelos pés</title>
-  <meta name="description" content="Tênis da Juh — modelos de 1ª e 2ª linha. Escolha seu modelo, numeração e finalize o pedido pelo WhatsApp.">
+  <meta name="description" content="Tênis da Juh — escolha seu modelo, numeração e finalize o pedido pelo WhatsApp.">
   <style>
     :root{--rosa:#ef8ea0;--rosa-claro:#fff2f5;--dourado:#c7983f;--marrom:#3b2824;--branco:#fff;--cinza:#7f7471;--verde:#1fa85b;--sombra:0 12px 30px rgba(86,45,52,.12)}
     *{box-sizing:border-box} html{scroll-behavior:smooth}
@@ -38,7 +38,6 @@
     .products{display:grid;grid-template-columns:repeat(3,1fr);gap:20px} .product{background:#fff;border:1px solid #f0e3e5;border-radius:24px;overflow:hidden;box-shadow:0 10px 24px rgba(60,40,40,.07)}
     .product-visual{height:260px;background:#fff;display:grid;place-items:center;position:relative;overflow:hidden;padding:10px}
     .product-visual img{width:100%;height:100%;object-fit:contain} .placeholder{font-size:86px}
-    .line-tag{position:absolute;top:14px;left:14px;background:#fff;color:var(--marrom);font-size:.75rem;font-weight:900;padding:7px 10px;border-radius:999px;box-shadow:0 5px 14px rgba(0,0,0,.08);z-index:2}
     .product-body{padding:18px} .product h3{margin:0 0 6px;font-size:1.08rem} .muted{color:var(--cinza);font-size:.9rem} .price{font-size:1.45rem;font-weight:950;margin:14px 0} .row{display:flex;gap:9px;align-items:center}
     select{flex:1;border:1px solid #eadcde;background:#fff;border-radius:12px;padding:11px;color:#4d3e3a} .add{width:100%;margin-top:12px;background:var(--rosa);color:#fff;border:none;padding:12px;border-radius:12px;font-weight:900;cursor:pointer}
 
@@ -166,7 +165,7 @@
   <main>
     <section class="hero" id="inicio"><div class="container"><div class="hero-grid">
       <div>
-        <div class="eyebrow">Tênis 1ª e 2ª linha</div>
+        <div class="eyebrow">Tênis da Juh</div>
         <h1>Seu próximo tênis favorito está aqui.</h1>
         <p>Escolha o modelo, selecione a numeração e monte seu pedido. No final, é só enviar tudo pronto pelo WhatsApp.</p>
         <div class="hero-actions"><a class="btn btn-primary" href="#catalogo">Ver catálogo 👟</a><a class="btn btn-secondary" href="#como-funciona">Como funciona</a></div>
@@ -182,12 +181,6 @@
           <option value="">Todos os tamanhos</option>
         </select>
         <button class="clear-filters" type="button" onclick="clearCatalogFilters()">Limpar filtros</button>
-      </div>
-
-      <div class="filters">
-        <button class="filter active" data-filter="todos">Todos</button>
-        <button class="filter" data-filter="1">1ª linha</button>
-        <button class="filter" data-filter="2">2ª linha</button>
       </div>
 
       <div class="gender-title">Gênero</div>
@@ -287,7 +280,6 @@
     const coupons = Array.isArray(window.CUPONS) ? window.CUPONS : [];
     const storeConfig = window.CONFIG_LOJA || {pix:true, card:true};
     let cart = [];
-    let currentFilter = "todos";
     let currentSearch = "";
     let currentSize = "";
     let currentGender = "todos";
@@ -386,12 +378,11 @@
       const box = document.getElementById("products");
 
       const visible = products.filter(p => {
-        const matchesLine = currentFilter === "todos" || String(p.line) === currentFilter;
         const matchesName = String(p.name || "").toLocaleLowerCase("pt-BR").includes(currentSearch);
         const matchesSize = !currentSize || (Array.isArray(p.sizes) && p.sizes.map(String).includes(currentSize));
         const productGender = String(p.gender || "unissex").toLowerCase();
         const matchesGender = currentGender === "todos" || productGender === currentGender;
-        return matchesLine && matchesName && matchesSize && matchesGender;
+        return matchesName && matchesSize && matchesGender;
       });
 
       document.getElementById("resultsCount").textContent =
@@ -412,7 +403,6 @@
         return `
         <article class="product">
           <div class="product-visual">
-            <span class="line-tag">${p.line}ª linha</span>
             ${
               firstImage
                 ? `<img id="card-image-${p.id}" src="${firstImage}" alt="${escapeHtml(p.name)}" onclick="event.stopPropagation(); openProductImage(${p.id}, currentCardIndexes[${p.id}] || 0)" title="Clique para ampliar">
@@ -536,12 +526,10 @@
     function clearCatalogFilters(){
       currentSearch = "";
       currentSize = "";
-      currentFilter = "todos";
       currentGender = "todos";
 
       document.getElementById("productSearch").value = "";
       document.getElementById("sizeFilter").value = "";
-      document.querySelectorAll(".filter[data-filter]").forEach(b=>b.classList.toggle("active", b.dataset.filter === "todos"));
       document.querySelectorAll(".gender-filter").forEach(b=>b.classList.toggle("active", b.dataset.gender === "todos"));
 
       renderProducts();
@@ -627,7 +615,7 @@
       const items=document.getElementById("cartItems");
       items.innerHTML=cart.length?cart.map((i,index)=>`
         <div class="cart-item"><div class="cart-item-top"><div><strong>${escapeHtml(i.name)}</strong>
-        <div class="muted">${i.line}ª linha • Tam. ${i.size} • Qtd. ${i.qty}</div>
+        <div class="muted">Tam. ${i.size} • Qtd. ${i.qty}</div>
         <div style="margin-top:5px;font-weight:900">${money(i.price*i.qty)}</div></div>
         <button class="remove" onclick="removeItem(${index})">Remover</button></div></div>`).join(""):`<div class="empty">Seu carrinho está vazio 🛒</div>`;
 
@@ -646,7 +634,7 @@
       if(!payment){document.getElementById("paymentMsg").textContent="Escolha Pix ou Cartão antes de finalizar.";return;}
       document.getElementById("paymentMsg").textContent="";
       const subtotal=cartSubtotal(), discount=couponDiscount(subtotal), total=Math.max(0,subtotal-discount);
-      const lines=cart.map(i=>`• ${i.name} | ${i.line}ª linha | Tam. ${i.size} | ${i.qty}x | ${money(i.price*i.qty)}`).join("\n");
+      const lines=cart.map(i=>`• ${i.name} | Tam. ${i.size} | ${i.qty}x | ${money(i.price*i.qty)}`).join("\n");
       let cup="";
       if(activeCoupon&&discount>0){
         const ids=Array.isArray(activeCoupon.productIds)?activeCoupon.productIds.map(Number):[];
@@ -665,12 +653,6 @@
 
     function toggleCart(open){document.getElementById("drawer").classList.toggle("open",open)}
     function backdropClose(e){if(e.target.id==="drawer")toggleCart(false)}
-    document.querySelectorAll(".filter[data-filter]").forEach(btn=>btn.addEventListener("click",()=>{
-      document.querySelectorAll(".filter[data-filter]").forEach(b=>b.classList.remove("active"));
-      btn.classList.add("active");
-      currentFilter=btn.dataset.filter;
-      renderProducts();
-    }));
 
 
     document.querySelectorAll(".gender-filter").forEach(btn=>btn.addEventListener("click",()=>{
