@@ -51,6 +51,53 @@
       font-size:.72rem;font-weight:850;box-shadow:0 5px 14px rgba(0,0,0,.08);
       pointer-events:none
     }
+
+    .card-nav{
+      position:absolute;top:50%;transform:translateY(-50%);z-index:4;
+      width:34px;height:34px;border:none;border-radius:50%;
+      background:rgba(255,255,255,.92);color:var(--marrom);
+      font-size:1.25rem;font-weight:900;cursor:pointer;
+      box-shadow:0 8px 18px rgba(0,0,0,.12);display:grid;place-items:center
+    }
+    .card-nav.prev{left:10px}
+    .card-nav.next{right:10px}
+    .photo-count{
+      position:absolute;left:12px;bottom:12px;z-index:3;
+      background:rgba(59,40,36,.82);color:#fff;border-radius:999px;
+      padding:6px 10px;font-size:.72rem;font-weight:900
+    }
+    .photo-modal-head-actions{display:flex;align-items:center;gap:8px}
+    .photo-modal-tool{
+      border:none;background:#f7eef0;color:var(--marrom);
+      border-radius:12px;padding:10px 12px;font-weight:900;cursor:pointer
+    }
+    .photo-modal-stage{
+      width:100%;height:100%;overflow:auto;
+      display:flex;align-items:center;justify-content:center;
+      background:#fff;border-radius:18px;position:relative
+    }
+    .photo-modal-stage img{
+      max-width:100%;max-height:100%;object-fit:contain;
+      display:block;cursor:zoom-in;transition:transform .18s ease
+    }
+    .photo-modal-stage img.zoomed{transform:scale(2);cursor:zoom-out}
+    .modal-nav{
+      position:absolute;top:50%;transform:translateY(-50%);z-index:8;
+      width:46px;height:46px;border:none;border-radius:50%;
+      background:rgba(255,255,255,.94);color:var(--marrom);
+      font-size:1.6rem;font-weight:900;cursor:pointer;
+      box-shadow:0 10px 22px rgba(0,0,0,.15)
+    }
+    .modal-nav.prev{left:18px}
+    .modal-nav.next{right:18px}
+    .photo-modal-foot{
+      min-height:56px;padding:10px 18px;
+      border-top:1px solid #eee;display:flex;align-items:center;
+      justify-content:space-between;gap:12px;flex-wrap:wrap
+    }
+    .photo-modal-counter{font-weight:900;color:#6d5b57}
+    .photo-modal-tip{font-size:.84rem;color:#7c6f6b}
+
     .photo-modal{
       position:fixed;inset:0;z-index:300;
       background:rgba(20,14,14,.88);
@@ -207,19 +254,29 @@
     </aside>
   </div>
 
-
-
   <div class="photo-modal" id="photoModal" onclick="photoModalBackdrop(event)" aria-hidden="true">
     <div class="photo-modal-card" role="dialog" aria-modal="true" aria-labelledby="photoModalTitle">
       <div class="photo-modal-head">
         <div class="photo-modal-title" id="photoModalTitle">Foto do produto</div>
-        <button class="photo-modal-close" type="button" onclick="closeProductImage()" aria-label="Fechar foto">✕</button>
+        <div class="photo-modal-head-actions">
+          <button class="photo-modal-tool" type="button" onclick="toggleModalZoom()">🔍 Lupa</button>
+          <button class="photo-modal-close" type="button" onclick="closeProductImage()" aria-label="Fechar foto">✕</button>
+        </div>
       </div>
       <div class="photo-modal-body">
-        <img id="photoModalImage" src="" alt="">
+        <button class="modal-nav prev" id="modalPrev" type="button" onclick="changeModalImage(-1)" aria-label="Foto anterior">‹</button>
+        <div class="photo-modal-stage" id="photoModalStage">
+          <img id="photoModalImage" src="" alt="" onclick="toggleModalZoom()">
+        </div>
+        <button class="modal-nav next" id="modalNext" type="button" onclick="changeModalImage(1)" aria-label="Próxima foto">›</button>
+      </div>
+      <div class="photo-modal-foot">
+        <div class="photo-modal-tip">Clique na foto ou no botão lupa para ampliar.</div>
+        <div class="photo-modal-counter" id="photoModalCounter">1 / 1</div>
       </div>
     </div>
   </div>
+
 
   <a class="whatsapp-float" id="whatsappFloat" href="#" aria-label="Falar com a Tênis da Juh pelo WhatsApp" title="Falar no WhatsApp" onclick="openWhatsAppFloat(event)">💬</a>
 
@@ -235,9 +292,78 @@
     let currentSize = "";
     let currentGender = "todos";
     let activeCoupon = null;
+    let currentCardIndexes = {};
+    let cardIntervals = {};
+    let modalProductId = null;
+    let modalImageIndex = 0;
+    let modalZoomed = false;
 
     const money = value => Number(value).toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
     const escapeHtml = v => String(v).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
+
+    function productImages(product){
+      const images = Array.isArray(product.images) ? product.images.filter(Boolean) : [];
+      if(images.length) return images;
+      return product.image ? [product.image] : [];
+    }
+
+    function normalizeProducts(){
+      products.forEach(p=>{
+        p.gender = p.gender || "unissex";
+        p.images = productImages(p);
+        p.image = p.images[0] || p.image || "";
+      });
+    }
+
+    function setupCardCarousels(visibleProducts){
+      Object.values(cardIntervals).forEach(intervalId=>clearInterval(intervalId));
+      cardIntervals = {};
+
+      visibleProducts.forEach(product=>{
+        const images = productImages(product);
+        if(!images.length) return;
+
+        const safeIndex = Math.min(Number(currentCardIndexes[product.id] || 0), images.length - 1);
+        currentCardIndexes[product.id] = safeIndex;
+        showCardImage(product.id, safeIndex);
+
+        if(images.length > 1){
+          cardIntervals[product.id] = setInterval(()=>{
+            showCardImage(product.id, Number(currentCardIndexes[product.id] || 0) + 1);
+          }, 10000);
+        }
+      });
+    }
+
+    function showCardImage(id, nextIndex){
+      const product = products.find(item => Number(item.id) === Number(id));
+      if(!product) return;
+
+      const images = productImages(product);
+      if(!images.length) return;
+
+      const total = images.length;
+      const safeIndex = ((Number(nextIndex) % total) + total) % total;
+      currentCardIndexes[id] = safeIndex;
+
+      const imageEl = document.getElementById(`card-image-${id}`);
+      const counterEl = document.getElementById(`card-count-${id}`);
+
+      if(imageEl){
+        imageEl.src = images[safeIndex];
+        imageEl.alt = product.name ? `${product.name} - foto ${safeIndex + 1}` : `Foto ${safeIndex + 1}`;
+      }
+
+      if(counterEl){
+        counterEl.textContent = `${safeIndex + 1}/${total}`;
+      }
+    }
+
+    function changeCardImage(event, id, step){
+      event.stopPropagation();
+      showCardImage(id, Number(currentCardIndexes[id] || 0) + Number(step));
+    }
+
 
     function genderLabel(value){
       const gender=String(value||"unissex").toLowerCase();
@@ -255,6 +381,7 @@
         sizes.map(s=>`<option value="${escapeHtml(s)}">Tamanho ${escapeHtml(s)}</option>`).join("");
     }
 
+
     function renderProducts(){
       const box = document.getElementById("products");
 
@@ -271,38 +398,108 @@
         visible.length === 1 ? "1 modelo encontrado" : `${visible.length} modelos encontrados`;
 
       if(!visible.length){
+        Object.values(cardIntervals).forEach(intervalId=>clearInterval(intervalId));
+        cardIntervals = {};
         box.innerHTML='<div class="empty">Nenhum tênis encontrado com esses filtros. 👟</div>';
         return;
       }
 
-      box.innerHTML = visible.map(p=>`
+      box.innerHTML = visible.map(p=>{
+        const images = productImages(p);
+        const firstImage = images[0] || "";
+        const hasMany = images.length > 1;
+
+        return `
         <article class="product">
-          <div class="product-visual"><span class="line-tag">${p.line}ª linha</span>${p.image?`<img src="${p.image}" alt="${escapeHtml(p.name)}" onclick="openProductImage(${p.id})" title="Clique para ampliar"><span class="photo-hint">🔍 Ver foto</span>`:`<span class="placeholder">👟</span>`}</div>
+          <div class="product-visual">
+            <span class="line-tag">${p.line}ª linha</span>
+            ${
+              firstImage
+                ? `<img id="card-image-${p.id}" src="${firstImage}" alt="${escapeHtml(p.name)}" onclick="event.stopPropagation(); openProductImage(${p.id}, currentCardIndexes[${p.id}] || 0)" title="Clique para ampliar">
+                   <span class="photo-hint">🔍 Ver foto</span>
+                   ${hasMany ? `<button class="card-nav prev" type="button" onclick="changeCardImage(event,${p.id},-1)" aria-label="Foto anterior">‹</button>
+                                <button class="card-nav next" type="button" onclick="changeCardImage(event,${p.id},1)" aria-label="Próxima foto">›</button>
+                                <span class="photo-count" id="card-count-${p.id}">1/${images.length}</span>` : ``}`
+                : `<span class="placeholder">👟</span>`
+            }
+          </div>
           <div class="product-body">
-            <h3>${escapeHtml(p.name)}</h3><div class="muted">${genderLabel(p.gender)} • Consulte disponibilidade</div>
+            <h3>${escapeHtml(p.name)}</h3>
+            <div class="muted">${genderLabel(p.gender)} • Consulte disponibilidade${images.length > 1 ? ` • ${images.length} fotos` : ``}</div>
             <div class="price">${money(p.price)}</div>
             <div class="row"><select id="size-${p.id}">${(p.sizes||[]).map(s=>`<option value="${s}">Tam. ${s}</option>`).join("")}</select></div>
             <button class="add" onclick="addToCart(${p.id})">Adicionar ao carrinho</button>
           </div>
-        </article>`).join("");
+        </article>`;
+      }).join("");
+
+      setupCardCarousels(visible);
     }
 
 
-    function openProductImage(id){
-      const p=products.find(x=>Number(x.id)===Number(id));
-      if(!p || !p.image) return;
+    function openProductImage(id, startIndex = 0){
+      const product = products.find(item=>Number(item.id)===Number(id));
+      if(!product) return;
+
+      const images = productImages(product);
+      if(!images.length) return;
+
+      modalProductId = Number(id);
+      modalImageIndex = Number(startIndex) || 0;
 
       const modal=document.getElementById("photoModal");
-      const img=document.getElementById("photoModalImage");
-      const title=document.getElementById("photoModalTitle");
-
-      img.src=p.image;
-      img.alt=p.name || "Foto do produto";
-      title.textContent=p.name || "Foto do produto";
+      document.getElementById("photoModalTitle").textContent = product.name || "Foto do produto";
 
       modal.classList.add("open");
       modal.setAttribute("aria-hidden","false");
       document.body.style.overflow="hidden";
+
+      setModalImage(modalImageIndex);
+    }
+
+    function setModalImage(index){
+      const product = products.find(item=>Number(item.id)===Number(modalProductId));
+      if(!product) return;
+
+      const images = productImages(product);
+      if(!images.length) return;
+
+      const total = images.length;
+      modalImageIndex = ((Number(index) % total) + total) % total;
+
+      const img=document.getElementById("photoModalImage");
+      img.src = images[modalImageIndex];
+      img.alt = product.name ? `${product.name} - foto ${modalImageIndex + 1}` : `Foto ${modalImageIndex + 1}`;
+      document.getElementById("photoModalCounter").textContent = `${modalImageIndex + 1} / ${total}`;
+
+      document.getElementById("modalPrev").style.display = total > 1 ? "grid" : "none";
+      document.getElementById("modalNext").style.display = total > 1 ? "grid" : "none";
+
+      resetModalZoom();
+    }
+
+    function changeModalImage(step){
+      setModalImage(modalImageIndex + Number(step));
+    }
+
+    function toggleModalZoom(){
+      const img=document.getElementById("photoModalImage");
+      const stage=document.getElementById("photoModalStage");
+      modalZoomed = !modalZoomed;
+      img.classList.toggle("zoomed", modalZoomed);
+      if(!modalZoomed){
+        stage.scrollLeft = 0;
+        stage.scrollTop = 0;
+      }
+    }
+
+    function resetModalZoom(){
+      modalZoomed = false;
+      const img=document.getElementById("photoModalImage");
+      const stage=document.getElementById("photoModalStage");
+      img.classList.remove("zoomed");
+      stage.scrollLeft = 0;
+      stage.scrollTop = 0;
     }
 
     function closeProductImage(){
@@ -312,6 +509,9 @@
       modal.classList.remove("open");
       modal.setAttribute("aria-hidden","true");
       img.src="";
+      modalProductId = null;
+      modalImageIndex = 0;
+      modalZoomed = false;
       document.body.style.overflow="";
     }
 
@@ -320,10 +520,18 @@
     }
 
     document.addEventListener("keydown",event=>{
-      if(event.key==="Escape" && document.getElementById("photoModal").classList.contains("open")){
+      const modalOpen = document.getElementById("photoModal").classList.contains("open");
+      if(event.key==="Escape" && modalOpen){
         closeProductImage();
       }
+      if(event.key==="ArrowLeft" && modalOpen){
+        changeModalImage(-1);
+      }
+      if(event.key==="ArrowRight" && modalOpen){
+        changeModalImage(1);
+      }
     });
+
 
     function clearCatalogFilters(){
       currentSearch = "";
@@ -483,6 +691,7 @@
     });
 
     document.getElementById("year").textContent=new Date().getFullYear();
+    normalizeProducts();
     populateSizeFilter();
     renderProducts();
     renderPayments();
