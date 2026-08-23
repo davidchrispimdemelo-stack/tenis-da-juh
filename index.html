@@ -29,7 +29,7 @@
     .search-box,.size-filter{width:100%;border:1px solid #eadcde;background:#fff;border-radius:14px;padding:12px 14px;color:#4d3e3a;outline:none}
     .search-box:focus,.size-filter:focus{border-color:#e4a2af;box-shadow:0 0 0 3px rgba(239,142,160,.12)}
     .clear-filters{border:1px solid #ecdde0;background:#fff;color:#6a5955;border-radius:14px;padding:0 14px;font-weight:850;cursor:pointer}
-    .results-count{font-size:.86rem;color:var(--cinza);margin:-4px 0 18px}
+    .gender-filters{display:flex;gap:8px;flex-wrap:wrap;margin:-6px 0 18px}.gender-title{font-size:.88rem;font-weight:850;color:#6a5955;margin:0 0 8px}.results-count{font-size:.86rem;color:var(--cinza);margin:-4px 0 18px}
     .delivery-card{background:linear-gradient(135deg,#fff6f8,#fffaf2);border:1px solid #f1dce1;border-radius:26px;padding:28px;display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center;box-shadow:0 10px 24px rgba(60,40,40,.06)}
     .delivery-icon{width:62px;height:62px;border-radius:18px;background:#fff;display:grid;place-items:center;font-size:30px;box-shadow:0 8px 20px rgba(70,45,50,.08)}
     .delivery-card h3{margin:0 0 7px;font-size:1.35rem}.delivery-card p{margin:0;color:var(--cinza);line-height:1.55}
@@ -92,6 +92,14 @@
         <button class="filter active" data-filter="todos">Todos</button>
         <button class="filter" data-filter="1">1ª linha</button>
         <button class="filter" data-filter="2">2ª linha</button>
+      </div>
+
+      <div class="gender-title">Gênero</div>
+      <div class="gender-filters">
+        <button class="filter gender-filter active" data-gender="todos">Todos</button>
+        <button class="filter gender-filter" data-gender="masculino">Masculino</button>
+        <button class="filter gender-filter" data-gender="feminino">Feminino</button>
+        <button class="filter gender-filter" data-gender="unissex">Unissex</button>
       </div>
 
       <div class="results-count" id="resultsCount"></div>
@@ -163,10 +171,18 @@
     let currentFilter = "todos";
     let currentSearch = "";
     let currentSize = "";
+    let currentGender = "todos";
     let activeCoupon = null;
 
     const money = value => Number(value).toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
     const escapeHtml = v => String(v).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
+
+    function genderLabel(value){
+      const gender=String(value||"unissex").toLowerCase();
+      if(gender==="masculino") return "Masculino";
+      if(gender==="feminino") return "Feminino";
+      return "Unissex";
+    }
 
     function populateSizeFilter(){
       const select = document.getElementById("sizeFilter");
@@ -184,7 +200,9 @@
         const matchesLine = currentFilter === "todos" || String(p.line) === currentFilter;
         const matchesName = String(p.name || "").toLocaleLowerCase("pt-BR").includes(currentSearch);
         const matchesSize = !currentSize || (Array.isArray(p.sizes) && p.sizes.map(String).includes(currentSize));
-        return matchesLine && matchesName && matchesSize;
+        const productGender = String(p.gender || "unissex").toLowerCase();
+        const matchesGender = currentGender === "todos" || productGender === currentGender;
+        return matchesLine && matchesName && matchesSize && matchesGender;
       });
 
       document.getElementById("resultsCount").textContent =
@@ -199,7 +217,7 @@
         <article class="product">
           <div class="product-visual"><span class="line-tag">${p.line}ª linha</span>${p.image?`<img src="${p.image}" alt="${escapeHtml(p.name)}">`:`<span class="placeholder">👟</span>`}</div>
           <div class="product-body">
-            <h3>${escapeHtml(p.name)}</h3><div class="muted">Consulte disponibilidade</div>
+            <h3>${escapeHtml(p.name)}</h3><div class="muted">${genderLabel(p.gender)} • Consulte disponibilidade</div>
             <div class="price">${money(p.price)}</div>
             <div class="row"><select id="size-${p.id}">${(p.sizes||[]).map(s=>`<option value="${s}">Tam. ${s}</option>`).join("")}</select></div>
             <button class="add" onclick="addToCart(${p.id})">Adicionar ao carrinho</button>
@@ -211,10 +229,12 @@
       currentSearch = "";
       currentSize = "";
       currentFilter = "todos";
+      currentGender = "todos";
 
       document.getElementById("productSearch").value = "";
       document.getElementById("sizeFilter").value = "";
-      document.querySelectorAll(".filter").forEach(b=>b.classList.toggle("active", b.dataset.filter === "todos"));
+      document.querySelectorAll(".filter[data-filter]").forEach(b=>b.classList.toggle("active", b.dataset.filter === "todos"));
+      document.querySelectorAll(".gender-filter").forEach(b=>b.classList.toggle("active", b.dataset.gender === "todos"));
 
       renderProducts();
     }
@@ -337,10 +357,18 @@
 
     function toggleCart(open){document.getElementById("drawer").classList.toggle("open",open)}
     function backdropClose(e){if(e.target.id==="drawer")toggleCart(false)}
-    document.querySelectorAll(".filter").forEach(btn=>btn.addEventListener("click",()=>{
-      document.querySelectorAll(".filter").forEach(b=>b.classList.remove("active"));
+    document.querySelectorAll(".filter[data-filter]").forEach(btn=>btn.addEventListener("click",()=>{
+      document.querySelectorAll(".filter[data-filter]").forEach(b=>b.classList.remove("active"));
       btn.classList.add("active");
       currentFilter=btn.dataset.filter;
+      renderProducts();
+    }));
+
+
+    document.querySelectorAll(".gender-filter").forEach(btn=>btn.addEventListener("click",()=>{
+      document.querySelectorAll(".gender-filter").forEach(b=>b.classList.remove("active"));
+      btn.classList.add("active");
+      currentGender=btn.dataset.gender;
       renderProducts();
     }));
 
