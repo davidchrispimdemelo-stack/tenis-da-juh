@@ -150,6 +150,100 @@
     .payment-option{display:flex;align-items:center;gap:10px;padding:11px;background:#fff;border:1px solid #eadde0;border-radius:12px;margin-top:8px;cursor:pointer} .payment-option input{accent-color:var(--rosa)}
     .summary-line{display:flex;justify-content:space-between;gap:12px;margin:6px 0;color:#6f5d59;font-size:.92rem} .discount{color:#188143;font-weight:800}
     .total{display:flex;justify-content:space-between;font-size:1.25rem;font-weight:950;margin:12px 0} .whatsapp{width:100%;background:#20b85a;color:#fff;border:none;border-radius:14px;padding:14px;font-weight:950;cursor:pointer} .notice{font-size:.78rem;color:#8a7772;margin-top:10px;line-height:1.4} .empty{color:#8a7772;text-align:center;padding:50px 0}
+
+    .channel-banner{
+      background:linear-gradient(135deg,#fff1f4,#fff8ed);
+      border:1px solid #f0dce1;border-radius:24px;padding:22px;
+      display:grid;grid-template-columns:1fr auto;gap:20px;align-items:center;
+      box-shadow:0 10px 24px rgba(60,40,40,.06)
+    }
+    .channel-banner h3{margin:0 0 6px;font-size:1.35rem}
+    .channel-banner p{margin:0;color:#756765;line-height:1.5}
+    .channel-btn{
+      display:inline-flex;align-items:center;justify-content:center;gap:8px;
+      background:#20b85a;color:#fff;border-radius:14px;padding:13px 17px;
+      font-weight:950;white-space:nowrap
+    }
+    .delivery-options-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .delivery-option-card{
+      background:#fff;border:1px solid #f0e4e5;border-radius:22px;padding:22px;
+      box-shadow:0 8px 18px rgba(54,37,40,.05)
+    }
+    .delivery-option-card .big-icon{font-size:2rem;margin-bottom:10px}
+    .delivery-option-card h3{margin:0 0 8px}
+    .delivery-option-card p{margin:0;color:#756765;line-height:1.55}
+    .product-seal{
+      position:absolute;right:12px;top:12px;z-index:5;
+      background:var(--marrom);color:#fff;border-radius:999px;
+      padding:7px 10px;font-size:.72rem;font-weight:950;
+      box-shadow:0 6px 16px rgba(0,0,0,.12)
+    }
+    .field-label{display:block;font-weight:900;margin-bottom:7px}
+    .checkout-input{
+      width:100%;border:1px solid #e3d2d6;border-radius:11px;
+      padding:11px;background:#fff;color:var(--marrom)
+    }
+    .fulfillment-option{
+      display:flex;align-items:flex-start;gap:10px;padding:11px;
+      background:#fff;border:1px solid #eadde0;border-radius:12px;
+      margin-top:8px;cursor:pointer
+    }
+    .fulfillment-option input{margin-top:3px;accent-color:var(--rosa)}
+    .checkout-help{font-size:.78rem;color:#887875;margin-top:7px;line-height:1.4}
+    .channel-mini{
+      display:block;margin-top:10px;padding:10px 12px;border-radius:12px;
+      background:#edf9f1;color:#17763c;font-weight:850;text-align:center
+    }
+    .faq-list{display:grid;gap:10px}
+    .faq-item{
+      background:#fff;border:1px solid #f0e4e5;border-radius:16px;
+      padding:0 16px;box-shadow:0 6px 16px rgba(54,37,40,.04)
+    }
+    .faq-item summary{
+      cursor:pointer;font-weight:900;padding:16px 0;list-style:none
+    }
+    .faq-item summary::-webkit-details-marker{display:none}
+    .faq-item p{margin:0;padding:0 0 16px;color:#756765;line-height:1.55}
+    .review-modal{
+      position:fixed;inset:0;z-index:400;background:rgba(20,14,14,.78);
+      display:none;align-items:center;justify-content:center;padding:18px
+    }
+    .review-modal.open{display:flex}
+    .review-card{
+      width:min(650px,96vw);max-height:90vh;overflow:auto;background:#fff;
+      border-radius:24px;box-shadow:0 28px 80px rgba(0,0,0,.3)
+    }
+    .review-head{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:18px 20px;border-bottom:1px solid #eee;position:sticky;top:0;
+      background:#fff;z-index:2
+    }
+    .review-head h3{margin:0}
+    .review-body{padding:20px}
+    .review-section{padding:14px 0;border-bottom:1px solid #f0e7e9}
+    .review-section:last-child{border-bottom:none}
+    .review-item{display:flex;justify-content:space-between;gap:16px;margin:8px 0}
+    .review-muted{color:#756765;font-size:.9rem}
+    .review-total{
+      display:flex;justify-content:space-between;gap:14px;
+      font-size:1.25rem;font-weight:950;margin-top:12px
+    }
+    .review-actions{
+      display:grid;grid-template-columns:1fr 1.4fr;gap:10px;
+      padding:0 20px 20px
+    }
+    .review-back,.review-confirm{
+      border:none;border-radius:14px;padding:14px;font-weight:950;cursor:pointer
+    }
+    .review-back{background:#f7eef0;color:var(--marrom)}
+    .review-confirm{background:#20b85a;color:#fff}
+    @media(max-width:700px){
+      .channel-banner{grid-template-columns:1fr}
+      .channel-btn{width:100%}
+      .delivery-options-grid{grid-template-columns:1fr}
+      .review-actions{grid-template-columns:1fr}
+    }
+
     @media(max-width:850px){.hero-grid{grid-template-columns:1fr;padding:26px}.products{grid-template-columns:repeat(2,1fr)}.info-grid{grid-template-columns:1fr}.menu{display:none}.catalog-tools{grid-template-columns:1fr 1fr}.clear-filters{grid-column:1/-1;padding:11px}.delivery-card{grid-template-columns:auto 1fr}}
     @media(max-width:560px){.topbar{font-size:.8rem}.nav{height:66px}.brand span{display:none}.hero{padding-top:26px}.hero-grid{border-radius:22px}.products{grid-template-columns:1fr}.section-head{align-items:start;flex-direction:column}.cart-btn{padding:10px 13px}.catalog-tools{grid-template-columns:1fr}.clear-filters{grid-column:auto}.delivery-card{grid-template-columns:1fr;text-align:center}.delivery-icon{margin:auto}.whatsapp-float{right:16px;bottom:16px;width:54px;height:54px}}
   </style>
@@ -158,7 +252,7 @@
   <div class="topbar">💗 Pedidos pelo WhatsApp • Consulte disponibilidade, tamanhos e entrega</div>
   <header><div class="container nav">
     <a class="brand" href="#inicio"><img src="logo-tenis-da-juh.png" alt="Logo Tênis da Juh"><span>Tênis da Juh</span></a>
-    <nav class="menu"><a href="#inicio">Início</a><a href="#catalogo">Catálogo</a><a href="#entrega">Entrega</a><a href="#como-funciona">Como comprar</a></nav>
+    <nav class="menu"><a href="#inicio">Início</a><a href="#catalogo">Catálogo</a><a href="#entrega">Entrega</a><a href="#como-funciona">Como comprar</a><a href="#faq">FAQ</a></nav>
     <button class="cart-btn" onclick="toggleCart(true)">🛒 Carrinho <span id="cartCount">0</span></button>
   </div></header>
 
@@ -172,6 +266,17 @@
       </div>
       <div class="hero-card"><img src="logo-tenis-da-juh.png" alt="Tênis da Juh"><strong>Estilo bonito por um preço que cabe no bolso 💕</strong></div>
     </div></div></section>
+
+
+    <section id="promocoes"><div class="container">
+      <div class="channel-banner">
+        <div>
+          <h3>🔥 Promoções e cupons no Canal da Tênis da Juh</h3>
+          <p>As promoções serão divulgadas em forma de cupom no nosso canal do WhatsApp. Entre no canal para acompanhar os códigos e novidades.</p>
+        </div>
+        <a class="channel-btn" href="https://whatsapp.com/channel/0029Vb99BoLKGGGLTg78dc3z" target="_blank" rel="noopener">💚 Entrar no canal</a>
+      </div>
+    </div></section>
 
     <section id="catalogo"><div class="container">
       <div class="section-head"><div><div class="eyebrow">Catálogo</div><h2>Escolha seu modelo</h2></div><p>Escolha a numeração antes de adicionar ao carrinho.</p></div>
@@ -196,18 +301,23 @@
     </div></section>
 
 
-    <section id="entrega"><div class="container">
+<section id="entrega"><div class="container">
       <div class="section-head">
-        <div><div class="eyebrow">Área de entrega</div><h2>Entregas em Guarulhos 📍</h2></div>
+        <div><div class="eyebrow">Entrega ou retirada</div><h2>Como receber seu pedido 📦</h2></div>
       </div>
-      <div class="delivery-card">
-        <div class="delivery-icon">🛵</div>
-        <div>
-          <h3>Entregamos somente em Guarulhos/SP</h3>
-          <p>Atendemos pedidos com entrega dentro de Guarulhos. O valor da entrega, prazo e disponibilidade para o seu bairro são confirmados pelo WhatsApp antes do pagamento.</p>
+      <div class="delivery-options-grid">
+        <div class="delivery-option-card">
+          <div class="big-icon">🏪</div>
+          <h3>Retirada</h3>
+          <p>Retire na portaria em <strong>Av. José Brumatti, 2538</strong>. O horário da retirada deve ser combinado antes pelo WhatsApp.</p>
+        </div>
+        <div class="delivery-option-card">
+          <div class="big-icon">🛵</div>
+          <h3>Entrega em Guarulhos</h3>
+          <p>A entrega é somente em Guarulhos/SP e será combinada pelo WhatsApp. Pode ser feita por <strong>Uber Moto</strong> ou pela <strong>Juh</strong>, conforme disponibilidade.</p>
         </div>
       </div>
-    </section>
+    </div></section>
 
     <section id="como-funciona"><div class="container">
       <div class="section-head"><div><div class="eyebrow">Como comprar</div><h2>Pedido simples e rápido</h2></div></div>
@@ -217,6 +327,35 @@
         <div class="info"><b>3. Envie 📲</b><span>Escolha a forma de pagamento e finalize pelo WhatsApp.</span></div>
       </div>
     </div></section>
+
+    <section id="faq"><div class="container">
+      <div class="section-head">
+        <div><div class="eyebrow">Dúvidas</div><h2>Perguntas frequentes ❓</h2></div>
+      </div>
+      <div class="faq-list">
+        <details class="faq-item">
+          <summary>📍 Onde posso retirar meu pedido?</summary>
+          <p>A retirada é na portaria em <strong>Av. José Brumatti, 2538</strong>. O horário precisa ser combinado previamente pelo WhatsApp.</p>
+        </details>
+        <details class="faq-item">
+          <summary>🛵 Como funciona a entrega?</summary>
+          <p>As entregas são somente em Guarulhos/SP. A forma de entrega é combinada pelo WhatsApp e pode ser por Uber Moto ou pela Juh, conforme disponibilidade.</p>
+        </details>
+        <details class="faq-item">
+          <summary>💳 Quais são as formas de pagamento?</summary>
+          <p>As opções disponíveis aparecem no carrinho. O site pode oferecer Pix e/ou cartão, conforme a configuração atual da loja.</p>
+        </details>
+        <details class="faq-item">
+          <summary>🎟️ Onde encontro promoções e cupons?</summary>
+          <p>Os cupons promocionais são divulgados no Canal da Tênis da Juh no WhatsApp. <a href="https://whatsapp.com/channel/0029Vb99BoLKGGGLTg78dc3z" target="_blank" rel="noopener"><strong>Entrar no canal</strong></a>.</p>
+        </details>
+        <details class="faq-item">
+          <summary>👟 Como faço um pedido?</summary>
+          <p>Escolha o tênis e o tamanho, adicione ao carrinho, informe seu nome, escolha pagamento e entrega/retirada, confira o resumo e finalize pelo WhatsApp.</p>
+        </details>
+      </div>
+    </div></section>
+
   </main>
 
   <footer><div class="container foot"><div><strong>Tênis da Juh</strong><div class="small">Seu estilo começa pelos pés 👟💗</div></div><div class="small">© <span id="year"></span> Tênis da Juh</div></div></footer>
@@ -227,9 +366,29 @@
       <div class="cart-items" id="cartItems"></div>
       <div class="cart-footer">
         <div class="box">
+          <label class="field-label" for="customerName">Seu nome 👤</label>
+          <input class="checkout-input" id="customerName" type="text" maxlength="60" placeholder="Digite seu nome">
+          <div id="nameMsg" class="coupon-msg err"></div>
+        </div>
+
+        <div class="box">
+          <div class="box-title">Como deseja receber? 🚚</div>
+          <label class="fulfillment-option">
+            <input type="radio" name="fulfillment" value="Retirada">
+            <span><b>Retirar na portaria</b><br><small>Av. José Brumatti, 2538 • horário a combinar</small></span>
+          </label>
+          <label class="fulfillment-option">
+            <input type="radio" name="fulfillment" value="Entrega">
+            <span><b>Entrega em Guarulhos</b><br><small>A combinar por Uber Moto ou pela Juh</small></span>
+          </label>
+          <div id="fulfillmentMsg" class="coupon-msg err"></div>
+        </div>
+
+        <div class="box">
           <div class="box-title">Cupom de desconto 🎟️</div>
           <div class="coupon-row"><input id="couponInput" placeholder="Ex.: JUH10"><button onclick="applyCoupon()">Aplicar</button></div>
           <div id="couponMsg" class="coupon-msg"></div>
+          <a class="channel-mini" href="https://whatsapp.com/channel/0029Vb99BoLKGGGLTg78dc3z" target="_blank" rel="noopener">🔥 Ver cupons no Canal do WhatsApp</a>
         </div>
 
         <div class="box">
@@ -241,8 +400,8 @@
         <div class="summary-line"><span>Subtotal</span><span id="cartSubtotal">R$ 0,00</span></div>
         <div class="summary-line discount" id="discountRow" style="display:none"><span>Desconto</span><span id="cartDiscount">- R$ 0,00</span></div>
         <div class="total"><span>Total</span><span id="cartTotal">R$ 0,00</span></div>
-        <button class="whatsapp" onclick="checkoutWhatsApp()">Finalizar pelo WhatsApp 💬</button>
-        <div class="notice">O site não cobra automaticamente. A forma de pagamento escolhida é enviada junto com o pedido para confirmação pelo WhatsApp.</div>
+        <button class="whatsapp" onclick="checkoutWhatsApp()">Revisar pedido 📋</button>
+        <div class="notice">O site não cobra automaticamente. Confira o resumo antes de abrir o WhatsApp. O site não realiza cobranças automaticamente.</div>
       </div>
     </aside>
   </div>
@@ -271,6 +430,21 @@
   </div>
 
 
+
+  <div class="review-modal" id="reviewModal" onclick="reviewBackdrop(event)" aria-hidden="true">
+    <div class="review-card" role="dialog" aria-modal="true" aria-labelledby="reviewTitle">
+      <div class="review-head">
+        <h3 id="reviewTitle">📋 Confira seu pedido</h3>
+        <button class="close" type="button" onclick="closeReview()">✕</button>
+      </div>
+      <div class="review-body" id="reviewBody"></div>
+      <div class="review-actions">
+        <button class="review-back" type="button" onclick="closeReview()">Voltar e editar</button>
+        <button class="review-confirm" type="button" onclick="confirmWhatsAppOrder()">Confirmar no WhatsApp 💬</button>
+      </div>
+    </div>
+  </div>
+
   <a class="whatsapp-float" id="whatsappFloat" href="#" aria-label="Falar com a Tênis da Juh pelo WhatsApp" title="Falar no WhatsApp" onclick="openWhatsAppFloat(event)">💬</a>
 
   <script src="produtos.js"></script>
@@ -289,6 +463,9 @@
     let modalProductId = null;
     let modalImageIndex = 0;
     let modalZoomed = false;
+    let pendingOrder = null;
+    const CART_STORAGE_KEY = "tenisDaJuhCartV2";
+    const CHECKOUT_STORAGE_KEY = "tenisDaJuhCheckoutV1";
 
     const money = value => Number(value).toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
     const escapeHtml = v => String(v).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
@@ -302,6 +479,7 @@
     function normalizeProducts(){
       products.forEach(p=>{
         p.gender = p.gender || "unissex";
+        p.seal = p.seal || "";
         p.images = productImages(p);
         p.image = p.images[0] || p.image || "";
       });
@@ -357,6 +535,16 @@
     }
 
 
+
+    function sealLabel(value){
+      const seal=String(value||"").toLowerCase();
+      if(seal==="novo") return "✨ NOVO";
+      if(seal==="mais-vendido") return "🔥 MAIS VENDIDO";
+      if(seal==="destaque") return "⭐ DESTAQUE";
+      if(seal==="ultimas-unidades") return "⚡ ÚLTIMAS UNIDADES";
+      return "";
+    }
+
     function genderLabel(value){
       const gender=String(value||"unissex").toLowerCase();
       if(gender==="masculino") return "Masculino";
@@ -403,6 +591,7 @@
         return `
         <article class="product">
           <div class="product-visual">
+            ${sealLabel(p.seal) ? `<span class="product-seal">${sealLabel(p.seal)}</span>` : ``}
             ${
               firstImage
                 ? `<img id="card-image-${p.id}" src="${firstImage}" alt="${escapeHtml(p.name)}" onclick="event.stopPropagation(); openProductImage(${p.id}, currentCardIndexes[${p.id}] || 0)" title="Clique para ampliar">
@@ -535,11 +724,101 @@
       renderProducts();
     }
 
+
+    function cartStoragePayload(){
+      return cart.map(item=>({
+        id:Number(item.id),
+        name:String(item.name||""),
+        price:Number(item.price||0),
+        size:String(item.size||""),
+        qty:Math.max(1,Number(item.qty||1))
+      }));
+    }
+
+    function saveCart(){
+      try{
+        localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cartStoragePayload()));
+      }catch(error){
+        console.warn("Não foi possível salvar o carrinho.", error);
+      }
+    }
+
+    function loadSavedCart(){
+      try{
+        const saved=JSON.parse(localStorage.getItem(CART_STORAGE_KEY)||"[]");
+        if(!Array.isArray(saved)) return;
+
+        cart=saved.map(item=>{
+          const product=products.find(p=>Number(p.id)===Number(item.id));
+          if(!product) return null;
+          return {
+            id:Number(product.id),
+            name:String(product.name||""),
+            price:Number(product.price||0),
+            size:String(item.size||""),
+            qty:Math.max(1,Number(item.qty||1))
+          };
+        }).filter(Boolean);
+      }catch(error){
+        cart=[];
+      }
+    }
+
+    function saveCheckoutState(){
+      try{
+        const fulfillment=document.querySelector('input[name="fulfillment"]:checked');
+        const payment=document.querySelector('input[name="payment"]:checked');
+        localStorage.setItem(CHECKOUT_STORAGE_KEY, JSON.stringify({
+          name:document.getElementById("customerName").value || "",
+          fulfillment:fulfillment ? fulfillment.value : "",
+          payment:payment ? payment.value : ""
+        }));
+      }catch(error){}
+    }
+
+    function loadCheckoutState(){
+      try{
+        const saved=JSON.parse(localStorage.getItem(CHECKOUT_STORAGE_KEY)||"{}");
+        document.getElementById("customerName").value=saved.name||"";
+
+        if(saved.fulfillment){
+          const f=document.querySelector(`input[name="fulfillment"][value="${saved.fulfillment}"]`);
+          if(f) f.checked=true;
+        }
+
+        if(saved.payment){
+          const p=document.querySelector(`input[name="payment"][value="${saved.payment}"]`);
+          if(p) p.checked=true;
+        }
+      }catch(error){}
+    }
+
+    function selectedFulfillment(){
+      const el=document.querySelector('input[name="fulfillment"]:checked');
+      return el ? el.value : "";
+    }
+
+    function fulfillmentDescription(value){
+      return value==="Retirada"
+        ? "Retirada na portaria — Av. José Brumatti, 2538 — horário a combinar"
+        : "Entrega em Guarulhos — a combinar por Uber Moto ou pela Juh";
+    }
+
     function addToCart(id){
       const p=products.find(x=>Number(x.id)===Number(id)); if(!p)return;
       const el=document.getElementById(`size-${id}`); const size=el?el.value:"";
       const existing=cart.find(i=>Number(i.id)===Number(id)&&String(i.size)===String(size));
-      if(existing)existing.qty++; else cart.push({...p,size,qty:1});
+      if(existing){
+        existing.qty++;
+      }else{
+        cart.push({
+          id:Number(p.id),
+          name:String(p.name||""),
+          price:Number(p.price||0),
+          size:String(size),
+          qty:1
+        });
+      }
       updateCart();
     }
     function removeItem(index){cart.splice(index,1);updateCart()}
@@ -626,23 +905,155 @@
       document.getElementById("cartDiscount").textContent="- "+money(discount);
       document.getElementById("discountRow").style.display=discount>0?"flex":"none";
       document.getElementById("cartTotal").textContent=money(total);
+      saveCart();
+      saveCheckoutState();
     }
 
     function checkoutWhatsApp(){
-      if(!cart.length){alert("Adicione pelo menos um produto ao carrinho.");return;}
+      if(!cart.length){
+        alert("Adicione pelo menos um produto ao carrinho.");
+        return;
+      }
+
+      const customerName=document.getElementById("customerName").value.trim();
       const payment=selectedPayment();
-      if(!payment){document.getElementById("paymentMsg").textContent="Escolha Pix ou Cartão antes de finalizar.";return;}
+      const fulfillment=selectedFulfillment();
+
+      document.getElementById("nameMsg").textContent="";
       document.getElementById("paymentMsg").textContent="";
-      const subtotal=cartSubtotal(), discount=couponDiscount(subtotal), total=Math.max(0,subtotal-discount);
+      document.getElementById("fulfillmentMsg").textContent="";
+
+      let valid=true;
+
+      if(!customerName){
+        document.getElementById("nameMsg").textContent="Digite seu nome antes de continuar.";
+        valid=false;
+      }
+
+      if(!fulfillment){
+        document.getElementById("fulfillmentMsg").textContent="Escolha entrega ou retirada.";
+        valid=false;
+      }
+
+      if(!payment){
+        document.getElementById("paymentMsg").textContent="Escolha Pix ou Cartão antes de continuar.";
+        valid=false;
+      }
+
+      if(!valid) return;
+
+      const subtotal=cartSubtotal();
+      const discount=couponDiscount(subtotal);
+      const total=Math.max(0,subtotal-discount);
+
+      pendingOrder={
+        customerName,
+        payment,
+        fulfillment,
+        subtotal,
+        discount,
+        total
+      };
+
+      const itemsHtml=cart.map(item=>`
+        <div class="review-item">
+          <div>
+            <strong>${escapeHtml(item.name)}</strong>
+            <div class="review-muted">Tam. ${escapeHtml(item.size)} • Qtd. ${item.qty}</div>
+          </div>
+          <strong>${money(item.price*item.qty)}</strong>
+        </div>
+      `).join("");
+
+      let couponHtml="";
+      if(activeCoupon && discount>0){
+        couponHtml=`
+          <div class="review-item">
+            <span>Cupom ${escapeHtml(String(activeCoupon.code).toUpperCase())}</span>
+            <strong style="color:#188143">- ${money(discount)}</strong>
+          </div>`;
+      }
+
+      document.getElementById("reviewBody").innerHTML=`
+        <div class="review-section">
+          <strong>👤 Cliente</strong>
+          <div class="review-muted" style="margin-top:6px">${escapeHtml(customerName)}</div>
+        </div>
+
+        <div class="review-section">
+          <strong>👟 Produtos</strong>
+          ${itemsHtml}
+        </div>
+
+        <div class="review-section">
+          <div class="review-item"><span>💳 Pagamento</span><strong>${escapeHtml(payment)}</strong></div>
+          <div class="review-item"><span>🚚 Recebimento</span><strong>${escapeHtml(fulfillment)}</strong></div>
+          <div class="review-muted">${escapeHtml(fulfillmentDescription(fulfillment))}</div>
+        </div>
+
+        <div class="review-section">
+          <div class="review-item"><span>Subtotal</span><strong>${money(subtotal)}</strong></div>
+          ${couponHtml}
+          <div class="review-total"><span>Total</span><span>${money(total)}</span></div>
+        </div>
+      `;
+
+      saveCheckoutState();
+      toggleCart(false);
+
+      const modal=document.getElementById("reviewModal");
+      modal.classList.add("open");
+      modal.setAttribute("aria-hidden","false");
+      document.body.style.overflow="hidden";
+    }
+
+    function closeReview(){
+      const modal=document.getElementById("reviewModal");
+      modal.classList.remove("open");
+      modal.setAttribute("aria-hidden","true");
+      document.body.style.overflow="";
+      pendingOrder=null;
+    }
+
+    function reviewBackdrop(event){
+      if(event.target.id==="reviewModal") closeReview();
+    }
+
+    function confirmWhatsAppOrder(){
+      if(!pendingOrder) return;
+
+      const {customerName,payment,fulfillment,subtotal,discount,total}=pendingOrder;
       const lines=cart.map(i=>`• ${i.name} | Tam. ${i.size} | ${i.qty}x | ${money(i.price*i.qty)}`).join("\n");
+
       let cup="";
       if(activeCoupon&&discount>0){
         const ids=Array.isArray(activeCoupon.productIds)?activeCoupon.productIds.map(Number):[];
         const targetNames=ids.length?products.filter(p=>ids.includes(Number(p.id))).map(p=>p.name).join(", "):"Todos os produtos";
-        cup=`\nCupom: ${String(activeCoupon.code).toUpperCase()}\nAplicado em: ${targetNames}\nDesconto: - ${money(discount)}`;
+        cup=`
+Cupom: ${String(activeCoupon.code).toUpperCase()}
+Aplicado em: ${targetNames}
+Desconto: - ${money(discount)}`;
       }
-      const message=`Olá! Quero fazer este pedido na Tênis da Juh 👟💗\n\n${lines}\n\nSubtotal: ${money(subtotal)}${cup}\nTotal: ${money(total)}\nForma de pagamento: ${payment}\n\nGostaria de confirmar a disponibilidade e combinar o pagamento/entrega.`;
+
+      const receiving=fulfillmentDescription(fulfillment);
+
+      const message=
+`Olá! Quero fazer este pedido na Tênis da Juh 👟💗
+
+Cliente: ${customerName}
+
+${lines}
+
+Subtotal: ${money(subtotal)}${cup}
+Total: ${money(total)}
+
+Forma de pagamento: ${payment}
+Recebimento: ${receiving}
+
+Gostaria de confirmar a disponibilidade e combinar os detalhes do pedido.`;
+
       window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`,"_blank");
+      closeReview();
     }
 
     function openWhatsAppFloat(event){
@@ -672,11 +1083,21 @@
       renderProducts();
     });
 
+
+    document.getElementById("customerName").addEventListener("input",saveCheckoutState);
+    document.addEventListener("change",event=>{
+      if(event.target && (event.target.name==="payment" || event.target.name==="fulfillment")){
+        saveCheckoutState();
+      }
+    });
+
     document.getElementById("year").textContent=new Date().getFullYear();
     normalizeProducts();
     populateSizeFilter();
     renderProducts();
     renderPayments();
+    loadSavedCart();
+    loadCheckoutState();
     updateCart();
   </script>
 </body>
