@@ -349,6 +349,103 @@
     }
 
   </style>
+
+
+  <style id="desktop-responsive-layout">
+    @media (min-width: 900px) {
+      .container{width:min(1500px,95%);margin:auto}
+
+      .topbar{padding:9px 20px;font-size:.95rem}
+      .nav{height:82px}
+      .brand img{width:58px;height:58px}
+      .brand{font-size:1.05rem}
+      .menu{gap:28px;font-size:1rem}
+      .cart-btn{padding:12px 20px;font-size:1rem}
+
+      .hero{padding:48px 0 34px}
+      .hero-grid{
+        grid-template-columns:minmax(0,1.45fr) minmax(320px,.55fr);
+        gap:52px;padding:48px 58px;border-radius:34px
+      }
+      .hero h1{max-width:850px;font-size:clamp(3.2rem,5vw,5.3rem)}
+      .hero p{max-width:780px;font-size:1.13rem}
+      .hero-card{padding:24px}
+      .hero-card img{width:min(350px,100%)}
+
+      section{padding:42px 0}
+      .section-head{margin-bottom:24px}
+
+      .catalog-tools{
+        grid-template-columns:minmax(420px,1.8fr) minmax(180px,.55fr) auto;
+        gap:12px;margin-bottom:16px
+      }
+      .search-box,.size-filter{padding:14px 16px}
+      .gender-filters{margin-bottom:22px}
+
+      .products{
+        grid-template-columns:repeat(auto-fit,minmax(310px,1fr));
+        gap:24px
+      }
+      .product{border-radius:26px}
+      .product-visual{height:390px;padding:18px}
+      .product-body{padding:21px}
+      .product h3{font-size:1.16rem}
+      .price{font-size:1.55rem;margin:15px 0}
+      .add,.share-product{padding:13px}
+
+      .mini-products{
+        grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+        gap:20px
+      }
+      .mini-product-image{height:230px}
+
+      .delivery-options-grid{gap:22px}
+      .delivery-option-card{padding:28px}
+      .info-grid{gap:22px}
+      .info{padding:28px}
+
+      .panel{
+        width:min(610px,48vw);
+        min-width:540px
+      }
+      .panel-head{padding:22px 26px}
+      .cart-items{padding:16px 26px}
+      .cart-item{padding:17px 0}
+      .cart-footer{padding:22px 26px;max-height:62vh}
+      .cart-choice{gap:10px}
+      .cart-choice-field select{padding:10px}
+
+      .photo-modal{padding:34px}
+      .photo-modal-card{
+        width:min(1280px,92vw);
+        height:min(900px,88vh)
+      }
+      .photo-modal-body{padding:24px}
+      .photo-modal-stage img.zoomed{transform:scale(2.35)}
+
+      .review-card{width:min(780px,85vw)}
+      .review-body{padding:24px 28px}
+      .review-actions{padding:0 28px 26px}
+
+      .whatsapp-float{
+        right:30px;bottom:28px;width:62px;height:62px;font-size:31px
+      }
+    }
+
+    @media (min-width: 1380px) {
+      .products{grid-template-columns:repeat(4,minmax(0,1fr))}
+      .product-visual{height:410px}
+    }
+
+    @media (min-width: 900px) and (max-width: 1150px) {
+      .container{width:94%}
+      .products{grid-template-columns:repeat(3,minmax(0,1fr))}
+      .product-visual{height:330px}
+      .hero-grid{grid-template-columns:1.15fr .85fr;padding:38px}
+      .panel{width:520px;min-width:500px}
+    }
+  </style>
+
 </head>
 <body>
   <div class="topbar">💗 Pedidos pelo WhatsApp • Consulte disponibilidade, tamanhos e entrega</div>
