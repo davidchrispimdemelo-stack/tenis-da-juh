@@ -244,6 +244,65 @@
       .review-actions{grid-template-columns:1fr}
     }
 
+
+    .novidades-wrap{
+      background:linear-gradient(135deg,#fff5f7,#fffaf0);
+      border:1px solid #f1dfe3;border-radius:28px;padding:26px;
+      box-shadow:0 10px 25px rgba(60,40,40,.05)
+    }
+    .mini-products{
+      display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:18px
+    }
+    .mini-product{
+      background:#fff;border:1px solid #f0e4e5;border-radius:20px;overflow:hidden;
+      box-shadow:0 8px 18px rgba(54,37,40,.05)
+    }
+    .mini-product-image{
+      height:180px;background:#fff;display:flex;align-items:center;justify-content:center;
+      padding:10px;position:relative;cursor:pointer
+    }
+    .mini-product-image img{width:100%;height:100%;object-fit:contain}
+    .mini-product-body{padding:14px}
+    .mini-product-body h3{font-size:1rem;margin:0 0 6px}
+    .mini-product-price{font-size:1.12rem;font-weight:950;margin:8px 0}
+    .mini-actions-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+    .mini-view,.mini-share{
+      border:none;border-radius:11px;padding:10px;font-weight:900;cursor:pointer
+    }
+    .mini-view{background:var(--rosa);color:#fff}
+    .mini-share{background:#f7eef0;color:var(--marrom)}
+    .share-product{
+      width:100%;margin-top:9px;background:#f8edf0;color:var(--marrom);
+      border:none;padding:11px;border-radius:12px;font-weight:900;cursor:pointer
+    }
+    .recommend-box{margin-top:16px}
+    .recommend-title{font-weight:950;margin-bottom:10px}
+    .recommend-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+    .recommend-card{
+      border:1px solid #eee;border-radius:14px;padding:10px;background:#fff;
+      cursor:pointer;transition:.16s transform
+    }
+    .recommend-card:hover{transform:translateY(-2px)}
+    .recommend-card img{width:100%;height:92px;object-fit:contain;display:block}
+    .recommend-card strong{display:block;font-size:.82rem;margin-top:7px}
+    .recommend-card span{font-size:.78rem;color:#756765}
+    .clear-cart{
+      width:100%;margin:0 0 12px;border:1px solid #efd5dc;background:#fff5f7;
+      color:#a43c55;border-radius:12px;padding:10px;font-weight:900;cursor:pointer
+    }
+    .bairro-box{display:none;margin-top:10px}
+    .bairro-box.show{display:block}
+    .direct-link-note{
+      font-size:.78rem;color:#7c6f6b;margin-top:8px;line-height:1.4
+    }
+    @media(max-width:850px){
+      .mini-products{grid-template-columns:repeat(2,1fr)}
+    }
+    @media(max-width:560px){
+      .mini-products{grid-template-columns:1fr}
+      .recommend-grid{grid-template-columns:1fr 1fr}
+    }
+
     @media(max-width:850px){.hero-grid{grid-template-columns:1fr;padding:26px}.products{grid-template-columns:repeat(2,1fr)}.info-grid{grid-template-columns:1fr}.menu{display:none}.catalog-tools{grid-template-columns:1fr 1fr}.clear-filters{grid-column:1/-1;padding:11px}.delivery-card{grid-template-columns:auto 1fr}}
     @media(max-width:560px){.topbar{font-size:.8rem}.nav{height:66px}.brand span{display:none}.hero{padding-top:26px}.hero-grid{border-radius:22px}.products{grid-template-columns:1fr}.section-head{align-items:start;flex-direction:column}.cart-btn{padding:10px 13px}.catalog-tools{grid-template-columns:1fr}.clear-filters{grid-column:auto}.delivery-card{grid-template-columns:1fr;text-align:center}.delivery-icon{margin:auto}.whatsapp-float{right:16px;bottom:16px;width:54px;height:54px}}
   </style>
@@ -278,6 +337,17 @@
       </div>
     </div></section>
 
+
+    <section id="novidades"><div class="container">
+      <div class="novidades-wrap">
+        <div class="section-head" style="margin-bottom:0">
+          <div><div class="eyebrow">Acabaram de chegar</div><h2>Novidades ✨</h2></div>
+          <p>Produtos marcados como “Novo” aparecem aqui automaticamente.</p>
+        </div>
+        <div class="mini-products" id="newProducts"></div>
+      </div>
+    </div></section>
+
     <section id="catalogo"><div class="container">
       <div class="section-head"><div><div class="eyebrow">Catálogo</div><h2>Escolha seu modelo</h2></div><p>Escolha a numeração antes de adicionar ao carrinho.</p></div>
       <div class="catalog-tools">
@@ -298,6 +368,15 @@
 
       <div class="results-count" id="resultsCount"></div>
       <div class="products" id="products"></div>
+    </div></section>
+
+
+
+    <section id="recomendacoes"><div class="container">
+      <div class="section-head">
+        <div><div class="eyebrow">Outras opções</div><h2>Você também pode gostar 💗</h2></div>
+      </div>
+      <div class="mini-products" id="recommendedProducts"></div>
     </div></section>
 
 
@@ -365,6 +444,7 @@
       <div class="panel-head"><div><strong style="font-size:1.2rem">Seu carrinho</strong><div class="muted">Confira antes de enviar</div></div><button class="close" onclick="toggleCart(false)">✕</button></div>
       <div class="cart-items" id="cartItems"></div>
       <div class="cart-footer">
+        <button class="clear-cart" id="clearCartBtn" type="button" onclick="clearCart()">🧹 Limpar carrinho</button>
         <div class="box">
           <label class="field-label" for="customerName">Seu nome 👤</label>
           <input class="checkout-input" id="customerName" type="text" maxlength="60" placeholder="Digite seu nome">
@@ -381,6 +461,19 @@
             <input type="radio" name="fulfillment" value="Entrega">
             <span><b>Entrega em Guarulhos</b><br><small>A combinar por Uber Moto ou pela Juh</small></span>
           </label>
+
+          <div class="bairro-box" id="bairroBox">
+            <label class="field-label" for="deliveryBairro">Bairro da entrega 📍</label>
+            <input class="checkout-input" id="deliveryBairro" type="text" maxlength="80" placeholder="Ex.: Vila Galvão">
+
+            <label class="field-label" for="deliveryCep" style="margin-top:10px">CEP 📮</label>
+            <input class="checkout-input" id="deliveryCep" type="text" inputmode="numeric" maxlength="9" placeholder="Ex.: 07000-000">
+
+            <div class="checkout-help">Informe bairro e CEP. O endereço completo e os detalhes da entrega serão combinados pelo WhatsApp.</div>
+            <div id="bairroMsg" class="coupon-msg err"></div>
+            <div id="cepMsg" class="coupon-msg err"></div>
+          </div>
+
           <div id="fulfillmentMsg" class="coupon-msg err"></div>
         </div>
 
@@ -425,6 +518,10 @@
       <div class="photo-modal-foot">
         <div class="photo-modal-tip">Clique na foto ou no botão lupa para ampliar.</div>
         <div class="photo-modal-counter" id="photoModalCounter">1 / 1</div>
+        <div class="recommend-box" style="width:100%">
+          <div class="recommend-title">Você também pode gostar</div>
+          <div class="recommend-grid" id="modalRecommendations"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -469,6 +566,159 @@
 
     const money = value => Number(value).toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
     const escapeHtml = v => String(v).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
+
+
+    function productLink(product){
+      const url=new URL(window.location.href);
+      url.hash="";
+      url.searchParams.set("produto", String(product.id));
+      return url.toString();
+    }
+
+    async function shareProduct(id){
+      const product=products.find(p=>Number(p.id)===Number(id));
+      if(!product) return;
+
+      const link=productLink(product);
+      const text=`Olha esse tênis da Tênis da Juh 👟💗\n${product.name}\n${money(product.price)}\n${link}`;
+
+      if(navigator.share){
+        try{
+          await navigator.share({
+            title:product.name,
+            text:`${product.name} — ${money(product.price)}`,
+            url:link
+          });
+          return;
+        }catch(error){
+          if(error && error.name==="AbortError") return;
+        }
+      }
+
+      try{
+        await navigator.clipboard.writeText(link);
+        alert("Link do produto copiado ✅");
+      }catch(error){
+        window.open(`https://wa.me/?text=${encodeURIComponent(text)}`,"_blank");
+      }
+    }
+
+    function recommendationCandidates(baseProduct){
+      if(!baseProduct) return products.slice(0,3);
+
+      const sameGender=products.filter(p=>
+        Number(p.id)!==Number(baseProduct.id) &&
+        String(p.gender||"unissex")===String(baseProduct.gender||"unissex")
+      );
+
+      const others=products.filter(p=>
+        Number(p.id)!==Number(baseProduct.id) &&
+        !sameGender.some(x=>Number(x.id)===Number(p.id))
+      );
+
+      return [...sameGender,...others].slice(0,3);
+    }
+
+    function miniProductHtml(product){
+      const images=productImages(product);
+      const img=images[0]||"";
+      return `
+        <article class="mini-product">
+          <div class="mini-product-image" onclick="focusProduct(${product.id})">
+            ${img?`<img src="${img}" alt="${escapeHtml(product.name)}">`:`<span class="placeholder">👟</span>`}
+            ${sealLabel(product.seal)?`<span class="product-seal">${sealLabel(product.seal)}</span>`:""}
+          </div>
+          <div class="mini-product-body">
+            <h3>${escapeHtml(product.name)}</h3>
+            <div class="mini-product-price">${money(product.price)}</div>
+            <div class="mini-actions-row">
+              <button class="mini-view" type="button" onclick="focusProduct(${product.id})">Ver produto</button>
+              <button class="mini-share" type="button" onclick="shareProduct(${product.id})">Compartilhar</button>
+            </div>
+          </div>
+        </article>`;
+    }
+
+    function renderNewProducts(){
+      const box=document.getElementById("newProducts");
+      if(!box) return;
+
+      const news=products
+        .filter(p=>String(p.seal||"").toLowerCase()==="novo")
+        .slice(0,6);
+
+      if(!news.length){
+        box.innerHTML=`<div class="empty">Quando você marcar um produto com o selo “Novo” no painel, ele aparecerá aqui. ✨</div>`;
+        return;
+      }
+
+      box.innerHTML=news.map(miniProductHtml).join("");
+    }
+
+    function renderRecommendations(baseProduct){
+      const box=document.getElementById("recommendedProducts");
+      if(!box) return;
+
+      const recommendations=recommendationCandidates(baseProduct);
+
+      if(!recommendations.length){
+        box.innerHTML=`<div class="empty">Cadastre mais produtos para aparecerem recomendações por aqui. 💗</div>`;
+        return;
+      }
+
+      box.innerHTML=recommendations.map(miniProductHtml).join("");
+    }
+
+    function renderModalRecommendations(baseProduct){
+      const box=document.getElementById("modalRecommendations");
+      if(!box) return;
+
+      const recommendations=recommendationCandidates(baseProduct);
+
+      box.innerHTML=recommendations.map(product=>{
+        const img=productImages(product)[0]||"";
+        return `
+          <div class="recommend-card" onclick="openProductImage(${product.id},0)">
+            ${img?`<img src="${img}" alt="${escapeHtml(product.name)}">`:""}
+            <strong>${escapeHtml(product.name)}</strong>
+            <span>${money(product.price)}</span>
+          </div>`;
+      }).join("");
+    }
+
+    function focusProduct(id){
+      const product=products.find(p=>Number(p.id)===Number(id));
+      if(!product) return;
+
+      renderRecommendations(product);
+
+      const card=document.querySelector(`[data-product-id="${id}"]`);
+      if(card){
+        card.scrollIntoView({behavior:"smooth",block:"center"});
+        card.animate(
+          [{transform:"scale(1)"},{transform:"scale(1.02)"},{transform:"scale(1)"}],
+          {duration:650}
+        );
+      }
+
+      const url=new URL(window.location.href);
+      url.searchParams.set("produto", String(id));
+      history.replaceState(null,"",url);
+    }
+
+    function openProductFromUrl(){
+      const params=new URLSearchParams(window.location.search);
+      const id=Number(params.get("produto"));
+      if(!id) return;
+
+      const product=products.find(p=>Number(p.id)===id);
+      if(!product) return;
+
+      setTimeout(()=>{
+        focusProduct(id);
+        openProductImage(id,0);
+      },200);
+    }
 
     function productImages(product){
       const images = Array.isArray(product.images) ? product.images.filter(Boolean) : [];
@@ -589,7 +839,7 @@
         const hasMany = images.length > 1;
 
         return `
-        <article class="product">
+        <article class="product" data-product-id="${p.id}">
           <div class="product-visual">
             ${sealLabel(p.seal) ? `<span class="product-seal">${sealLabel(p.seal)}</span>` : ``}
             ${
@@ -608,6 +858,7 @@
             <div class="price">${money(p.price)}</div>
             <div class="row"><select id="size-${p.id}">${(p.sizes||[]).map(s=>`<option value="${s}">Tam. ${s}</option>`).join("")}</select></div>
             <button class="add" onclick="addToCart(${p.id})">Adicionar ao carrinho</button>
+            <button class="share-product" onclick="shareProduct(${p.id})">📲 Compartilhar produto</button>
           </div>
         </article>`;
       }).join("");
@@ -628,6 +879,8 @@
 
       const modal=document.getElementById("photoModal");
       document.getElementById("photoModalTitle").textContent = product.name || "Foto do produto";
+      renderRecommendations(product);
+      renderModalRecommendations(product);
 
       modal.classList.add("open");
       modal.setAttribute("aria-hidden","false");
@@ -771,7 +1024,9 @@
         localStorage.setItem(CHECKOUT_STORAGE_KEY, JSON.stringify({
           name:document.getElementById("customerName").value || "",
           fulfillment:fulfillment ? fulfillment.value : "",
-          payment:payment ? payment.value : ""
+          payment:payment ? payment.value : "",
+          bairro:document.getElementById("deliveryBairro").value || "",
+          cep:document.getElementById("deliveryCep").value || ""
         }));
       }catch(error){}
     }
@@ -780,6 +1035,8 @@
       try{
         const saved=JSON.parse(localStorage.getItem(CHECKOUT_STORAGE_KEY)||"{}");
         document.getElementById("customerName").value=saved.name||"";
+        document.getElementById("deliveryBairro").value=saved.bairro||"";
+        document.getElementById("deliveryCep").value=saved.cep||"";
 
         if(saved.fulfillment){
           const f=document.querySelector(`input[name="fulfillment"][value="${saved.fulfillment}"]`);
@@ -791,6 +1048,21 @@
           if(p) p.checked=true;
         }
       }catch(error){}
+    }
+
+
+    function updateDeliveryFields(){
+      const fulfillment=selectedFulfillment();
+      const box=document.getElementById("bairroBox");
+
+      if(fulfillment==="Entrega"){
+        box.classList.add("show");
+      }else{
+        box.classList.remove("show");
+        document.getElementById("bairroMsg").textContent="";
+        document.getElementById("cepMsg").textContent="";
+      document.getElementById("cepMsg").textContent="";
+      }
     }
 
     function selectedFulfillment(){
@@ -821,7 +1093,22 @@
       }
       updateCart();
     }
-    function removeItem(index){cart.splice(index,1);updateCart()}
+    function removeItem(index){
+      cart.splice(index,1);
+      updateCart();
+    }
+
+    function clearCart(){
+      if(!cart.length) return;
+      if(!confirm("Tem certeza que deseja limpar todo o carrinho?")) return;
+
+      cart=[];
+      activeCoupon=null;
+      document.getElementById("couponInput").value="";
+      document.getElementById("couponMsg").textContent="";
+      localStorage.removeItem(CART_STORAGE_KEY);
+      updateCart();
+    }
     function cartSubtotal(){return cart.reduce((s,i)=>s+Number(i.price)*i.qty,0)}
     function eligibleCouponSubtotal(){
       if(!activeCoupon) return 0;
@@ -918,10 +1205,14 @@
       const customerName=document.getElementById("customerName").value.trim();
       const payment=selectedPayment();
       const fulfillment=selectedFulfillment();
+      const bairro=document.getElementById("deliveryBairro").value.trim();
+      const cep=document.getElementById("deliveryCep").value.trim();
 
       document.getElementById("nameMsg").textContent="";
       document.getElementById("paymentMsg").textContent="";
       document.getElementById("fulfillmentMsg").textContent="";
+      document.getElementById("bairroMsg").textContent="";
+      document.getElementById("cepMsg").textContent="";
 
       let valid=true;
 
@@ -933,6 +1224,19 @@
       if(!fulfillment){
         document.getElementById("fulfillmentMsg").textContent="Escolha entrega ou retirada.";
         valid=false;
+      }
+
+      if(fulfillment==="Entrega" && !bairro){
+        document.getElementById("bairroMsg").textContent="Digite o bairro da entrega.";
+        valid=false;
+      }
+
+      if(fulfillment==="Entrega"){
+        const cepDigits=cep.replace(/\D/g,"");
+        if(cepDigits.length!==8){
+          document.getElementById("cepMsg").textContent="Digite um CEP válido com 8 números.";
+          valid=false;
+        }
       }
 
       if(!payment){
@@ -950,6 +1254,8 @@
         customerName,
         payment,
         fulfillment,
+        bairro,
+        cep,
         subtotal,
         discount,
         total
@@ -989,6 +1295,7 @@
           <div class="review-item"><span>💳 Pagamento</span><strong>${escapeHtml(payment)}</strong></div>
           <div class="review-item"><span>🚚 Recebimento</span><strong>${escapeHtml(fulfillment)}</strong></div>
           <div class="review-muted">${escapeHtml(fulfillmentDescription(fulfillment))}</div>
+          ${fulfillment==="Entrega" ? `<div class="review-muted" style="margin-top:5px">📍 Bairro: ${escapeHtml(bairro)}</div><div class="review-muted" style="margin-top:3px">📮 CEP: ${escapeHtml(cep)}</div>` : ""}
         </div>
 
         <div class="review-section">
@@ -1022,7 +1329,7 @@
     function confirmWhatsAppOrder(){
       if(!pendingOrder) return;
 
-      const {customerName,payment,fulfillment,subtotal,discount,total}=pendingOrder;
+      const {customerName,payment,fulfillment,bairro,cep,subtotal,discount,total}=pendingOrder;
       const lines=cart.map(i=>`• ${i.name} | Tam. ${i.size} | ${i.qty}x | ${money(i.price*i.qty)}`).join("\n");
 
       let cup="";
@@ -1035,7 +1342,7 @@ Aplicado em: ${targetNames}
 Desconto: - ${money(discount)}`;
       }
 
-      const receiving=fulfillmentDescription(fulfillment);
+      const receiving=fulfillmentDescription(fulfillment) + (fulfillment==="Entrega" ? ` | Bairro: ${bairro} | CEP: ${cep}` : "");
 
       const message=
 `Olá! Quero fazer este pedido na Tênis da Juh 👟💗
@@ -1085,8 +1392,17 @@ Gostaria de confirmar a disponibilidade e combinar os detalhes do pedido.`;
 
 
     document.getElementById("customerName").addEventListener("input",saveCheckoutState);
+    document.getElementById("deliveryBairro").addEventListener("input",saveCheckoutState);
+    document.getElementById("deliveryCep").addEventListener("input",event=>{
+      let value=event.target.value.replace(/\D/g,"").slice(0,8);
+      if(value.length>5) value=value.slice(0,5)+"-"+value.slice(5);
+      event.target.value=value;
+      saveCheckoutState();
+    });
+
     document.addEventListener("change",event=>{
       if(event.target && (event.target.name==="payment" || event.target.name==="fulfillment")){
+        if(event.target.name==="fulfillment") updateDeliveryFields();
         saveCheckoutState();
       }
     });
@@ -1095,10 +1411,14 @@ Gostaria de confirmar a disponibilidade e combinar os detalhes do pedido.`;
     normalizeProducts();
     populateSizeFilter();
     renderProducts();
+    renderNewProducts();
+    renderRecommendations(products[0] || null);
     renderPayments();
     loadSavedCart();
     loadCheckoutState();
+    updateDeliveryFields();
     updateCart();
+    openProductFromUrl();
   </script>
 </body>
 </html>
