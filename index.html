@@ -36,13 +36,13 @@
     .whatsapp-float{position:fixed;right:22px;bottom:22px;z-index:90;width:58px;height:58px;border-radius:50%;background:#20b85a;color:#fff;display:grid;place-items:center;font-size:29px;box-shadow:0 12px 28px rgba(32,184,90,.35);border:3px solid #fff;transition:.2s transform}
     .whatsapp-float:hover{transform:translateY(-3px) scale(1.03)}
     .products{display:grid;grid-template-columns:repeat(3,1fr);gap:20px} .product{background:#fff;border:1px solid #f0e3e5;border-radius:24px;overflow:hidden;box-shadow:0 10px 24px rgba(60,40,40,.07)}
-    .product-visual{height:260px;background:#fff;display:grid;place-items:center;position:relative;overflow:hidden;padding:10px}
-    .product-visual img{width:100%;height:100%;object-fit:contain} .placeholder{font-size:86px}
+    .product-visual{height:340px;background:#fff;display:grid;place-items:center;position:relative;overflow:hidden;padding:14px}
+    .product-visual img{width:100%;height:100%;max-width:100%;max-height:100%;object-fit:contain;object-position:center center} .placeholder{font-size:86px}
     .product-body{padding:18px} .product h3{margin:0 0 6px;font-size:1.08rem} .muted{color:var(--cinza);font-size:.9rem} .price{font-size:1.45rem;font-weight:950;margin:14px 0} .row{display:flex;gap:9px;align-items:center}
     select{flex:1;border:1px solid #eadcde;background:#fff;border-radius:12px;padding:11px;color:#4d3e3a} .add{width:100%;margin-top:12px;background:var(--rosa);color:#fff;border:none;padding:12px;border-radius:12px;font-weight:900;cursor:pointer}
 
     .product-visual img{cursor:zoom-in;transition:transform .18s ease}
-    .product-visual img:hover{transform:scale(1.025)}
+    .product-visual img:hover{transform:none}
     .photo-hint{
       position:absolute;right:12px;bottom:12px;z-index:3;
       background:rgba(255,255,255,.94);border:1px solid #eee;
@@ -295,6 +295,44 @@
     .direct-link-note{
       font-size:.78rem;color:#7c6f6b;margin-top:8px;line-height:1.4
     }
+
+    .variant-box{margin:12px 0 0}
+    .variant-label{
+      display:block;font-size:.82rem;font-weight:900;color:#6c5955;
+      margin-bottom:6px
+    }
+    .variant-select{
+      width:100%;border:1px solid #eadcde;background:#fff;
+      border-radius:12px;padding:11px;color:#4d3e3a
+    }
+    .variant-single{
+      margin:10px 0 0;padding:9px 11px;background:#fff7f9;
+      border:1px solid #efdde2;border-radius:11px;
+      font-size:.86rem;font-weight:850;color:#665450
+    }
+
+
+    .coupon-detail{
+      margin-top:7px;padding:8px 10px;border-radius:10px;
+      background:#fff;border:1px solid #ecdde0;
+      font-size:.78rem;color:#756765;line-height:1.45
+    }
+
+
+    .cart-choice{
+      margin-top:8px;display:grid;grid-template-columns:1fr 1fr;gap:8px
+    }
+    .cart-choice-field label{
+      display:block;font-size:.72rem;font-weight:900;color:#756765;margin-bottom:4px
+    }
+    .cart-choice-field select{
+      width:100%;min-width:0;border:1px solid #eadde0;border-radius:9px;
+      background:#fff;padding:8px 9px;color:var(--marrom);font-size:.83rem
+    }
+    @media(max-width:430px){
+      .cart-choice{grid-template-columns:1fr}
+    }
+
     @media(max-width:850px){
       .mini-products{grid-template-columns:repeat(2,1fr)}
     }
@@ -305,6 +343,11 @@
 
     @media(max-width:850px){.hero-grid{grid-template-columns:1fr;padding:26px}.products{grid-template-columns:repeat(2,1fr)}.info-grid{grid-template-columns:1fr}.menu{display:none}.catalog-tools{grid-template-columns:1fr 1fr}.clear-filters{grid-column:1/-1;padding:11px}.delivery-card{grid-template-columns:auto 1fr}}
     @media(max-width:560px){.topbar{font-size:.8rem}.nav{height:66px}.brand span{display:none}.hero{padding-top:26px}.hero-grid{border-radius:22px}.products{grid-template-columns:1fr}.section-head{align-items:start;flex-direction:column}.cart-btn{padding:10px 13px}.catalog-tools{grid-template-columns:1fr}.clear-filters{grid-column:auto}.delivery-card{grid-template-columns:1fr;text-align:center}.delivery-icon{margin:auto}.whatsapp-float{right:16px;bottom:16px;width:54px;height:54px}}
+  
+    @media(max-width:560px){
+      .product-visual{height:320px;padding:10px}
+    }
+
   </style>
 </head>
 <body>
@@ -556,6 +599,7 @@
     let currentGender = "todos";
     let activeCoupon = null;
     let currentCardIndexes = {};
+    let currentVariantIndexes = {};
     let cardIntervals = {};
     let modalProductId = null;
     let modalImageIndex = 0;
@@ -572,6 +616,14 @@
       const url=new URL(window.location.href);
       url.hash="";
       url.searchParams.set("produto", String(product.id));
+
+      const variant=activeVariant(product);
+      if(variant && variant.name && String(variant.name).toLowerCase()!=="padrão"){
+        url.searchParams.set("cor", String(variant.name));
+      }else{
+        url.searchParams.delete("cor");
+      }
+
       return url.toString();
     }
 
@@ -579,14 +631,23 @@
       const product=products.find(p=>Number(p.id)===Number(id));
       if(!product) return;
 
+      const variant=activeVariant(product);
+      const variantText=variant && variant.name && String(variant.name).toLowerCase()!=="padrão"
+        ? `
+Cor: ${variant.name}`
+        : "";
+
       const link=productLink(product);
-      const text=`Olha esse tênis da Tênis da Juh 👟💗\n${product.name}\n${money(product.price)}\n${link}`;
+      const text=`Olha esse tênis da Tênis da Juh 👟💗
+${product.name}${variantText}
+${money(product.price)}
+${link}`;
 
       if(navigator.share){
         try{
           await navigator.share({
             title:product.name,
-            text:`${product.name} — ${money(product.price)}`,
+            text:`${product.name}${variantText} — ${money(product.price)}`,
             url:link
           });
           return;
@@ -620,7 +681,7 @@
     }
 
     function miniProductHtml(product){
-      const images=productImages(product);
+      const images=productImages(product,0);
       const img=images[0]||"";
       return `
         <article class="mini-product">
@@ -676,7 +737,7 @@
       const recommendations=recommendationCandidates(baseProduct);
 
       box.innerHTML=recommendations.map(product=>{
-        const img=productImages(product)[0]||"";
+        const img=productImages(product,0)[0]||"";
         return `
           <div class="recommend-card" onclick="openProductImage(${product.id},0)">
             ${img?`<img src="${img}" alt="${escapeHtml(product.name)}">`:""}
@@ -714,25 +775,113 @@
       const product=products.find(p=>Number(p.id)===id);
       if(!product) return;
 
+      const requestedColor=params.get("cor");
+      if(requestedColor){
+        const variants=productVariants(product);
+        const foundIndex=variants.findIndex(v=>
+          String(v.name||"").toLocaleLowerCase("pt-BR")===
+          String(requestedColor).toLocaleLowerCase("pt-BR")
+        );
+
+        if(foundIndex>=0) currentVariantIndexes[id]=foundIndex;
+      }
+
+      renderProducts();
+
       setTimeout(()=>{
         focusProduct(id);
         openProductImage(id,0);
       },200);
     }
 
-    function productImages(product){
-      const images = Array.isArray(product.images) ? product.images.filter(Boolean) : [];
-      if(images.length) return images;
-      return product.image ? [product.image] : [];
+    function productVariants(product){
+      if(Array.isArray(product.variants) && product.variants.length){
+        return product.variants;
+      }
+
+      const legacyImages=Array.isArray(product.images) && product.images.length
+        ? product.images.filter(Boolean)
+        : (product.image ? [product.image] : []);
+
+      const legacySizes=Array.isArray(product.sizes) ? product.sizes : [];
+
+      return [{
+        name:"Padrão",
+        images:legacyImages,
+        sizes:legacySizes
+      }];
+    }
+
+    function selectedVariantIndex(product){
+      const variants=productVariants(product);
+      const requested=Number(currentVariantIndexes[product.id] || 0);
+      return Math.max(0,Math.min(requested,variants.length-1));
+    }
+
+    function activeVariant(product){
+      const variants=productVariants(product);
+      return variants[selectedVariantIndex(product)] || variants[0];
+    }
+
+    function productImages(product, variantIndex=null){
+      const variants=productVariants(product);
+      const index=variantIndex===null
+        ? selectedVariantIndex(product)
+        : Math.max(0,Math.min(Number(variantIndex)||0,variants.length-1));
+
+      const variant=variants[index] || variants[0];
+      return Array.isArray(variant.images) ? variant.images.filter(Boolean) : [];
+    }
+
+    function productSizes(product, variantIndex=null){
+      const variants=productVariants(product);
+      const index=variantIndex===null
+        ? selectedVariantIndex(product)
+        : Math.max(0,Math.min(Number(variantIndex)||0,variants.length-1));
+
+      const variant=variants[index] || variants[0];
+      return Array.isArray(variant.sizes) ? variant.sizes : [];
+    }
+
+    function allProductSizes(product){
+      return [...new Set(productVariants(product).flatMap(v=>
+        Array.isArray(v.sizes) ? v.sizes.map(String) : []
+      ))];
     }
 
     function normalizeProducts(){
       products.forEach(p=>{
         p.gender = p.gender || "unissex";
         p.seal = p.seal || "";
-        p.images = productImages(p);
-        p.image = p.images[0] || p.image || "";
+
+        const variants=productVariants(p).map((variant,index)=>({
+          name:String(variant.name || `Versão ${index+1}`),
+          images:Array.isArray(variant.images) ? variant.images.filter(Boolean) : [],
+          sizes:Array.isArray(variant.sizes) ? variant.sizes : []
+        }));
+
+        p.variants=variants.length ? variants : [{name:"Padrão",images:[],sizes:[]}];
+
+        // Compatibilidade com versões antigas do site/painel
+        p.images=p.variants[0].images;
+        p.image=p.variants[0].images[0] || "";
+        p.sizes=[...new Set(p.variants.flatMap(v=>v.sizes))];
       });
+    }
+
+    function changeProductVariant(id){
+      const product=products.find(p=>Number(p.id)===Number(id));
+      const select=document.getElementById(`variant-${id}`);
+      if(!product || !select) return;
+
+      currentVariantIndexes[id]=Number(select.value)||0;
+      currentCardIndexes[id]=0;
+
+      renderProducts();
+      renderRecommendations(product);
+
+      const card=document.querySelector(`[data-product-id="${id}"]`);
+      if(card) card.scrollIntoView({behavior:"smooth",block:"center"});
     }
 
     function setupCardCarousels(visibleProducts){
@@ -804,7 +953,7 @@
 
     function populateSizeFilter(){
       const select = document.getElementById("sizeFilter");
-      const sizes = [...new Set(products.flatMap(p => Array.isArray(p.sizes) ? p.sizes.map(String) : []))]
+      const sizes = [...new Set(products.flatMap(p => allProductSizes(p)))]
         .sort((a,b)=>Number(a)-Number(b));
 
       select.innerHTML = `<option value="">Todos os tamanhos</option>` +
@@ -817,7 +966,7 @@
 
       const visible = products.filter(p => {
         const matchesName = String(p.name || "").toLocaleLowerCase("pt-BR").includes(currentSearch);
-        const matchesSize = !currentSize || (Array.isArray(p.sizes) && p.sizes.map(String).includes(currentSize));
+        const matchesSize = !currentSize || allProductSizes(p).includes(currentSize);
         const productGender = String(p.gender || "unissex").toLowerCase();
         const matchesGender = currentGender === "todos" || productGender === currentGender;
         return matchesName && matchesSize && matchesGender;
@@ -834,9 +983,24 @@
       }
 
       box.innerHTML = visible.map(p=>{
-        const images = productImages(p);
-        const firstImage = images[0] || "";
-        const hasMany = images.length > 1;
+        const variants=productVariants(p);
+        const variantIndex=selectedVariantIndex(p);
+        const variant=variants[variantIndex];
+        const images=productImages(p);
+        const sizes=productSizes(p);
+        const firstImage=images[0] || "";
+        const hasMany=images.length > 1;
+
+        const variantControl=variants.length>1
+          ? `<div class="variant-box">
+               <label class="variant-label" for="variant-${p.id}">Cor</label>
+               <select class="variant-select" id="variant-${p.id}" onchange="changeProductVariant(${p.id})">
+                 ${variants.map((v,index)=>`<option value="${index}" ${index===variantIndex?"selected":""}>${escapeHtml(v.name)}</option>`).join("")}
+               </select>
+             </div>`
+          : (variant && variant.name && String(variant.name).toLowerCase()!=="padrão"
+              ? `<div class="variant-single">Cor: ${escapeHtml(variant.name)}</div>`
+              : "");
 
         return `
         <article class="product" data-product-id="${p.id}">
@@ -844,7 +1008,7 @@
             ${sealLabel(p.seal) ? `<span class="product-seal">${sealLabel(p.seal)}</span>` : ``}
             ${
               firstImage
-                ? `<img id="card-image-${p.id}" src="${firstImage}" alt="${escapeHtml(p.name)}" onclick="event.stopPropagation(); openProductImage(${p.id}, currentCardIndexes[${p.id}] || 0)" title="Clique para ampliar">
+                ? `<img id="card-image-${p.id}" src="${firstImage}" alt="${escapeHtml(p.name)} - ${escapeHtml(variant?.name||"")}" onclick="event.stopPropagation(); openProductImage(${p.id}, currentCardIndexes[${p.id}] || 0)" title="Clique para ampliar">
                    <span class="photo-hint">🔍 Ver foto</span>
                    ${hasMany ? `<button class="card-nav prev" type="button" onclick="changeCardImage(event,${p.id},-1)" aria-label="Foto anterior">‹</button>
                                 <button class="card-nav next" type="button" onclick="changeCardImage(event,${p.id},1)" aria-label="Próxima foto">›</button>
@@ -852,11 +1016,22 @@
                 : `<span class="placeholder">👟</span>`
             }
           </div>
+
           <div class="product-body">
             <h3>${escapeHtml(p.name)}</h3>
             <div class="muted">${genderLabel(p.gender)} • Consulte disponibilidade${images.length > 1 ? ` • ${images.length} fotos` : ``}</div>
             <div class="price">${money(p.price)}</div>
-            <div class="row"><select id="size-${p.id}">${(p.sizes||[]).map(s=>`<option value="${s}">Tam. ${s}</option>`).join("")}</select></div>
+
+            ${variantControl}
+
+            <div class="row" style="margin-top:10px">
+              <select id="size-${p.id}">
+                ${sizes.length
+                  ? sizes.map(s=>`<option value="${s}">Tam. ${s}</option>`).join("")
+                  : `<option value="">Consulte tamanho</option>`}
+              </select>
+            </div>
+
             <button class="add" onclick="addToCart(${p.id})">Adicionar ao carrinho</button>
             <button class="share-product" onclick="shareProduct(${p.id})">📲 Compartilhar produto</button>
           </div>
@@ -878,7 +1053,11 @@
       modalImageIndex = Number(startIndex) || 0;
 
       const modal=document.getElementById("photoModal");
-      document.getElementById("photoModalTitle").textContent = product.name || "Foto do produto";
+      const variant=activeVariant(product);
+      document.getElementById("photoModalTitle").textContent =
+        variant && variant.name && String(variant.name).toLowerCase()!=="padrão"
+          ? `${product.name} — ${variant.name}`
+          : (product.name || "Foto do produto");
       renderRecommendations(product);
       renderModalRecommendations(product);
 
@@ -984,6 +1163,8 @@
         name:String(item.name||""),
         price:Number(item.price||0),
         size:String(item.size||""),
+        variantName:String(item.variantName||""),
+        variantIndex:Number(item.variantIndex||0),
         qty:Math.max(1,Number(item.qty||1))
       }));
     }
@@ -1004,11 +1185,24 @@
         cart=saved.map(item=>{
           const product=products.find(p=>Number(p.id)===Number(item.id));
           if(!product) return null;
+          const variants=productVariants(product);
+          let variantIndex=Number(item.variantIndex||0);
+
+          if(item.variantName){
+            const found=variants.findIndex(v=>String(v.name)===String(item.variantName));
+            if(found>=0) variantIndex=found;
+          }
+
+          variantIndex=Math.max(0,Math.min(variantIndex,variants.length-1));
+          const variant=variants[variantIndex];
+
           return {
             id:Number(product.id),
             name:String(product.name||""),
             price:Number(product.price||0),
             size:String(item.size||""),
+            variantName:String(variant?.name||""),
+            variantIndex,
             qty:Math.max(1,Number(item.qty||1))
           };
         }).filter(Boolean);
@@ -1077,9 +1271,20 @@
     }
 
     function addToCart(id){
-      const p=products.find(x=>Number(x.id)===Number(id)); if(!p)return;
-      const el=document.getElementById(`size-${id}`); const size=el?el.value:"";
-      const existing=cart.find(i=>Number(i.id)===Number(id)&&String(i.size)===String(size));
+      const p=products.find(x=>Number(x.id)===Number(id));
+      if(!p) return;
+
+      const variantIndex=selectedVariantIndex(p);
+      const variant=productVariants(p)[variantIndex];
+      const el=document.getElementById(`size-${id}`);
+      const size=el ? el.value : "";
+
+      const existing=cart.find(i=>
+        Number(i.id)===Number(id) &&
+        String(i.size)===String(size) &&
+        String(i.variantName||"")===String(variant?.name||"")
+      );
+
       if(existing){
         existing.qty++;
       }else{
@@ -1088,9 +1293,12 @@
           name:String(p.name||""),
           price:Number(p.price||0),
           size:String(size),
+          variantName:String(variant?.name||""),
+          variantIndex,
           qty:1
         });
       }
+
       updateCart();
     }
     function removeItem(index){
@@ -1110,56 +1318,247 @@
       updateCart();
     }
     function cartSubtotal(){return cart.reduce((s,i)=>s+Number(i.price)*i.qty,0)}
-    function eligibleCouponSubtotal(){
-      if(!activeCoupon) return 0;
-      const ids = Array.isArray(activeCoupon.productIds) ? activeCoupon.productIds.map(Number) : [];
-      if(!ids.length) return cartSubtotal();
-      return cart.reduce((sum,item)=> ids.includes(Number(item.id)) ? sum + Number(item.price)*item.qty : sum, 0);
+    function couponUsageKey(code){
+      return `tenisDaJuhCouponUsage:${String(code||"").toUpperCase()}`;
     }
 
-    function couponDiscount(subtotal){
-      if(!activeCoupon) return 0;
-      const eligibleSubtotal = eligibleCouponSubtotal();
-      if(eligibleSubtotal <= 0) return 0;
-      if(subtotal < Number(activeCoupon.min || 0)) return 0;
-      let d = activeCoupon.type === "percent"
-        ? eligibleSubtotal * (Number(activeCoupon.value) / 100)
-        : Number(activeCoupon.value);
-      return Math.max(0, Math.min(d, eligibleSubtotal));
+    function getCouponUsage(coupon){
+      try{
+        return Math.max(0,Number(localStorage.getItem(couponUsageKey(coupon.code))||0));
+      }catch(error){
+        return 0;
+      }
+    }
+
+    function registerCouponUsage(coupon){
+      if(!coupon) return;
+      try{
+        const current=getCouponUsage(coupon);
+        localStorage.setItem(couponUsageKey(coupon.code),String(current+1));
+      }catch(error){}
+    }
+
+    function couponExpired(coupon){
+      if(!coupon || !coupon.expiresAt) return false;
+
+      const parts=String(coupon.expiresAt).split("-").map(Number);
+      if(parts.length!==3 || parts.some(Number.isNaN)) return false;
+
+      const end=new Date(parts[0],parts[1]-1,parts[2],23,59,59,999);
+      return new Date()>end;
+    }
+
+    function couponUsageReached(coupon){
+      const limit=Math.max(0,Number(coupon.usageLimit||0));
+      return limit>0 && getCouponUsage(coupon)>=limit;
+    }
+
+    function eligibleCouponItems(coupon=activeCoupon){
+      if(!coupon) return [];
+
+      const ids=Array.isArray(coupon.productIds)
+        ? coupon.productIds.map(Number)
+        : [];
+
+      return cart.filter(item=>
+        !ids.length || ids.includes(Number(item.id))
+      );
+    }
+
+    function couponCalculation(coupon=activeCoupon){
+      const subtotal=cartSubtotal();
+
+      if(!coupon){
+        return {
+          discount:0,
+          eligibleSubtotal:0,
+          eligibleUnits:0,
+          discountedUnits:0
+        };
+      }
+
+      if(coupon.active===false || couponExpired(coupon) || couponUsageReached(coupon)){
+        return {
+          discount:0,
+          eligibleSubtotal:0,
+          eligibleUnits:0,
+          discountedUnits:0
+        };
+      }
+
+      if(subtotal<Number(coupon.min||0)){
+        return {
+          discount:0,
+          eligibleSubtotal:0,
+          eligibleUnits:0,
+          discountedUnits:0
+        };
+      }
+
+      const eligibleItems=eligibleCouponItems(coupon);
+      const eligibleUnits=eligibleItems.reduce(
+        (sum,item)=>sum+Math.max(0,Number(item.qty||0)),
+        0
+      );
+
+      if(!eligibleUnits){
+        return {
+          discount:0,
+          eligibleSubtotal:0,
+          eligibleUnits:0,
+          discountedUnits:0
+        };
+      }
+
+      const maxUnits=Math.max(0,Number(coupon.maxUnits||0));
+      let remaining=maxUnits>0 ? maxUnits : Infinity;
+      let eligibleSubtotal=0;
+      let discountedUnits=0;
+      let fixedPerUnitDiscount=0;
+
+      for(const item of eligibleItems){
+        if(remaining<=0) break;
+
+        const qty=Math.max(0,Number(item.qty||0));
+        const units=Math.min(qty,remaining);
+        if(units<=0) continue;
+
+        const unitPrice=Math.max(0,Number(item.price||0));
+
+        eligibleSubtotal += unitPrice*units;
+        discountedUnits += units;
+
+        if(coupon.type==="fixed" && String(coupon.applicationMode||"order")==="unit"){
+          fixedPerUnitDiscount += Math.min(Number(coupon.value||0),unitPrice)*units;
+        }
+
+        remaining -= units;
+      }
+
+      let discount=0;
+
+      if(coupon.type==="percent"){
+        discount=eligibleSubtotal*(Number(coupon.value||0)/100);
+      }else if(String(coupon.applicationMode||"order")==="unit"){
+        discount=fixedPerUnitDiscount;
+      }else{
+        discount=Number(coupon.value||0);
+      }
+
+      discount=Math.max(0,Math.min(discount,eligibleSubtotal));
+
+      return {
+        discount,
+        eligibleSubtotal,
+        eligibleUnits,
+        discountedUnits
+      };
+    }
+
+    function couponDiscount(){
+      return couponCalculation(activeCoupon).discount;
     }
 
     function applyCoupon(){
-      const input=document.getElementById("couponInput"), msg=document.getElementById("couponMsg");
+      const input=document.getElementById("couponInput");
+      const msg=document.getElementById("couponMsg");
       const code=input.value.trim().toUpperCase();
-      if(!code){activeCoupon=null;msg.textContent="";updateCart();return;}
 
-      const found=coupons.find(c=>String(c.code).toUpperCase()===code&&c.active!==false);
-      if(!found){activeCoupon=null;msg.className="coupon-msg err";msg.textContent="Cupom inválido ou desativado.";updateCart();return;}
-
-      const subtotal=cartSubtotal();
-      if(subtotal<Number(found.min||0)){
-        activeCoupon=null;msg.className="coupon-msg err";
-        msg.textContent=`Compra mínima: ${money(found.min||0)}.`;
-        updateCart();return;
+      if(!code){
+        activeCoupon=null;
+        msg.textContent="";
+        updateCart();
+        return;
       }
 
-      const ids = Array.isArray(found.productIds) ? found.productIds.map(Number) : [];
+      const found=coupons.find(c=>
+        String(c.code).toUpperCase()===code &&
+        c.active!==false
+      );
+
+      if(!found){
+        activeCoupon=null;
+        msg.className="coupon-msg err";
+        msg.textContent="Cupom inválido ou desativado.";
+        updateCart();
+        return;
+      }
+
+      if(couponExpired(found)){
+        activeCoupon=null;
+        msg.className="coupon-msg err";
+        msg.textContent="Esse cupom já expirou.";
+        updateCart();
+        return;
+      }
+
+      if(couponUsageReached(found)){
+        const limit=Math.max(0,Number(found.usageLimit||0));
+        activeCoupon=null;
+        msg.className="coupon-msg err";
+        msg.textContent=`Você já atingiu o limite de ${limit} uso(s) desse cupom neste aparelho.`;
+        updateCart();
+        return;
+      }
+
+      const subtotal=cartSubtotal();
+
+      if(subtotal<Number(found.min||0)){
+        activeCoupon=null;
+        msg.className="coupon-msg err";
+        msg.textContent=`Compra mínima: ${money(found.min||0)}.`;
+        updateCart();
+        return;
+      }
+
+      const ids=Array.isArray(found.productIds)
+        ? found.productIds.map(Number)
+        : [];
+
       if(ids.length){
-        const hasEligible = cart.some(item => ids.includes(Number(item.id)));
+        const hasEligible=cart.some(item=>ids.includes(Number(item.id)));
+
         if(!hasEligible){
-          activeCoupon=null;msg.className="coupon-msg err";
+          activeCoupon=null;
+          msg.className="coupon-msg err";
           msg.textContent="Esse cupom é exclusivo para outro tênis.";
-          updateCart();return;
+          updateCart();
+          return;
         }
       }
 
-      activeCoupon=found;msg.className="coupon-msg ok";
-      if(ids.length){
-        const names=products.filter(p=>ids.includes(Number(p.id))).map(p=>p.name);
-        msg.textContent=`Cupom ${found.code} aplicado em: ${names.join(", ")} 🎉`;
-      }else{
-        msg.textContent=`Cupom ${found.code} aplicado! 🎉`;
+      activeCoupon=found;
+      const calc=couponCalculation(found);
+
+      if(calc.discount<=0){
+        activeCoupon=null;
+        msg.className="coupon-msg err";
+        msg.textContent="Esse cupom não encontrou nenhuma unidade válida no carrinho.";
+        updateCart();
+        return;
       }
+
+      msg.className="coupon-msg ok";
+
+      const targetText=ids.length
+        ? products.filter(p=>ids.includes(Number(p.id))).map(p=>p.name).join(", ")
+        : "os produtos elegíveis";
+
+      const modeText=
+        found.type==="fixed" && String(found.applicationMode||"order")==="unit"
+          ? `${money(found.value)} por unidade`
+          : (found.type==="percent"
+              ? `${Number(found.value)}% de desconto`
+              : `${money(found.value)} no pedido`);
+
+      const maxText=Number(found.maxUnits||0)>0
+        ? ` • até ${Number(found.maxUnits)} unidade(s)`
+        : "";
+
+      msg.innerHTML=
+        `Cupom <b>${escapeHtml(found.code)}</b> aplicado em ${escapeHtml(targetText)} 🎉`+
+        `<div class="coupon-detail">${escapeHtml(modeText)}${escapeHtml(maxText)} • desconto agora: <b>${money(calc.discount)}</b></div>`;
+
       updateCart();
     }
 
@@ -1176,22 +1575,155 @@
       return el?el.value:"";
     }
 
+
+    function mergeDuplicateCartItems(){
+      const merged=[];
+
+      for(const item of cart){
+        const existing=merged.find(other=>
+          Number(other.id)===Number(item.id) &&
+          String(other.variantName||"")===String(item.variantName||"") &&
+          String(other.size||"")===String(item.size||"")
+        );
+
+        if(existing){
+          existing.qty+=Math.max(1,Number(item.qty||1));
+        }else{
+          merged.push({...item,qty:Math.max(1,Number(item.qty||1))});
+        }
+      }
+
+      cart=merged;
+    }
+
+    function changeCartVariant(index,newVariantIndex){
+      const item=cart[index];
+      if(!item) return;
+
+      const product=products.find(p=>Number(p.id)===Number(item.id));
+      if(!product) return;
+
+      const variants=productVariants(product);
+      const safeIndex=Math.max(0,Math.min(Number(newVariantIndex)||0,variants.length-1));
+      const variant=variants[safeIndex];
+
+      item.variantIndex=safeIndex;
+      item.variantName=String(variant?.name||"");
+
+      const sizes=Array.isArray(variant?.sizes)?variant.sizes.map(String):[];
+
+      if(sizes.length && !sizes.includes(String(item.size))){
+        item.size=String(sizes[0]);
+      }
+
+      mergeDuplicateCartItems();
+      updateCart();
+    }
+
+    function changeCartSize(index,newSize){
+      const item=cart[index];
+      if(!item) return;
+
+      item.size=String(newSize||"");
+      mergeDuplicateCartItems();
+      updateCart();
+    }
+
     function updateCart(){
       document.getElementById("cartCount").textContent=cart.reduce((s,i)=>s+i.qty,0);
       const items=document.getElementById("cartItems");
-      items.innerHTML=cart.length?cart.map((i,index)=>`
-        <div class="cart-item"><div class="cart-item-top"><div><strong>${escapeHtml(i.name)}</strong>
-        <div class="muted">Tam. ${i.size} • Qtd. ${i.qty}</div>
-        <div style="margin-top:5px;font-weight:900">${money(i.price*i.qty)}</div></div>
-        <button class="remove" onclick="removeItem(${index})">Remover</button></div></div>`).join(""):`<div class="empty">Seu carrinho está vazio 🛒</div>`;
+
+      items.innerHTML=cart.length ? cart.map((item,index)=>{
+        const product=products.find(p=>Number(p.id)===Number(item.id));
+        const variants=product ? productVariants(product) : [];
+        let variantIndex=Math.max(0,Number(item.variantIndex||0));
+
+        if(product && item.variantName){
+          const found=variants.findIndex(v=>String(v.name)===String(item.variantName));
+          if(found>=0) variantIndex=found;
+        }
+
+        if(variants.length){
+          variantIndex=Math.min(variantIndex,variants.length-1);
+        }
+
+        const variant=variants[variantIndex] || null;
+        const availableSizes=variant && Array.isArray(variant.sizes)
+          ? variant.sizes.map(String)
+          : [String(item.size||"")].filter(Boolean);
+
+        const variantSelector=variants.length>1
+          ? `<div class="cart-choice-field">
+               <label>Cor / versão</label>
+               <select onchange="changeCartVariant(${index},this.value)">
+                 ${variants.map((v,vIndex)=>`
+                   <option value="${vIndex}" ${vIndex===variantIndex?"selected":""}>
+                     ${escapeHtml(v.name)}
+                   </option>`).join("")}
+               </select>
+             </div>`
+          : `<div class="cart-choice-field">
+               <label>Cor / versão</label>
+               <select disabled>
+                 <option>${escapeHtml(item.variantName && String(item.variantName).toLowerCase()!=="padrão" ? item.variantName : "Única versão")}</option>
+               </select>
+             </div>`;
+
+        const sizeSelector=`
+          <div class="cart-choice-field">
+            <label>Tamanho</label>
+            <select onchange="changeCartSize(${index},this.value)">
+              ${availableSizes.length
+                ? availableSizes.map(size=>`
+                    <option value="${escapeHtml(size)}" ${String(size)===String(item.size)?"selected":""}>
+                      Tam. ${escapeHtml(size)}
+                    </option>`).join("")
+                : `<option value="${escapeHtml(item.size||"")}">Tam. ${escapeHtml(item.size||"")}</option>`}
+            </select>
+          </div>`;
+
+        return `
+          <div class="cart-item">
+            <div class="cart-item-top">
+              <div style="min-width:0;flex:1">
+                <strong>${escapeHtml(item.name)}</strong>
+                <div class="muted">Qtd. ${item.qty}</div>
+
+                <div class="cart-choice">
+                  ${variantSelector}
+                  ${sizeSelector}
+                </div>
+
+                <div style="margin-top:8px;font-weight:900">${money(item.price*item.qty)}</div>
+              </div>
+
+              <button class="remove" onclick="removeItem(${index})">Remover</button>
+            </div>
+          </div>`;
+      }).join("") : `<div class="empty">Seu carrinho está vazio 🛒</div>`;
 
       const subtotal=cartSubtotal();
-      if(activeCoupon&&subtotal<Number(activeCoupon.min||0))activeCoupon=null;
-      const discount=couponDiscount(subtotal), total=Math.max(0,subtotal-discount);
+
+      if(activeCoupon){
+        if(
+          subtotal<Number(activeCoupon.min||0) ||
+          couponExpired(activeCoupon) ||
+          couponUsageReached(activeCoupon)
+        ){
+          activeCoupon=null;
+          document.getElementById("couponInput").value="";
+          document.getElementById("couponMsg").textContent="";
+        }
+      }
+
+      const discount=couponDiscount();
+      const total=Math.max(0,subtotal-discount);
+
       document.getElementById("cartSubtotal").textContent=money(subtotal);
       document.getElementById("cartDiscount").textContent="- "+money(discount);
       document.getElementById("discountRow").style.display=discount>0?"flex":"none";
       document.getElementById("cartTotal").textContent=money(total);
+
       saveCart();
       saveCheckoutState();
     }
@@ -1247,7 +1779,7 @@
       if(!valid) return;
 
       const subtotal=cartSubtotal();
-      const discount=couponDiscount(subtotal);
+      const discount=couponDiscount();
       const total=Math.max(0,subtotal-discount);
 
       pendingOrder={
@@ -1265,7 +1797,7 @@
         <div class="review-item">
           <div>
             <strong>${escapeHtml(item.name)}</strong>
-            <div class="review-muted">Tam. ${escapeHtml(item.size)} • Qtd. ${item.qty}</div>
+            <div class="review-muted">${item.variantName && String(item.variantName).toLowerCase()!=="padrão" ? `Cor: ${escapeHtml(item.variantName)} • ` : ""}Tam. ${escapeHtml(item.size)} • Qtd. ${item.qty}</div>
           </div>
           <strong>${money(item.price*item.qty)}</strong>
         </div>
@@ -1273,9 +1805,15 @@
 
       let couponHtml="";
       if(activeCoupon && discount>0){
+        const calc=couponCalculation(activeCoupon);
+        const unitInfo=
+          activeCoupon.type==="fixed" && String(activeCoupon.applicationMode||"order")==="unit"
+            ? ` • ${calc.discountedUnits} unidade(s) com desconto`
+            : "";
+
         couponHtml=`
           <div class="review-item">
-            <span>Cupom ${escapeHtml(String(activeCoupon.code).toUpperCase())}</span>
+            <span>Cupom ${escapeHtml(String(activeCoupon.code).toUpperCase())}${unitInfo}</span>
             <strong style="color:#188143">- ${money(discount)}</strong>
           </div>`;
       }
@@ -1330,15 +1868,24 @@
       if(!pendingOrder) return;
 
       const {customerName,payment,fulfillment,bairro,cep,subtotal,discount,total}=pendingOrder;
-      const lines=cart.map(i=>`• ${i.name} | Tam. ${i.size} | ${i.qty}x | ${money(i.price*i.qty)}`).join("\n");
+      const lines=cart.map(i=>`• ${i.name}${i.variantName && String(i.variantName).toLowerCase()!=="padrão" ? ` | Cor: ${i.variantName}` : ""} | Tam. ${i.size} | ${i.qty}x | ${money(i.price*i.qty)}`).join("\n");
 
       let cup="";
       if(activeCoupon&&discount>0){
         const ids=Array.isArray(activeCoupon.productIds)?activeCoupon.productIds.map(Number):[];
         const targetNames=ids.length?products.filter(p=>ids.includes(Number(p.id))).map(p=>p.name).join(", "):"Todos os produtos";
+        const calc=couponCalculation(activeCoupon);
+        const mode=
+          activeCoupon.type==="fixed" && String(activeCoupon.applicationMode||"order")==="unit"
+            ? `${money(activeCoupon.value)} por unidade (${calc.discountedUnits} unidade(s))`
+            : (activeCoupon.type==="percent"
+                ? `${Number(activeCoupon.value)}%`
+                : `${money(activeCoupon.value)} por pedido`);
+
         cup=`
 Cupom: ${String(activeCoupon.code).toUpperCase()}
 Aplicado em: ${targetNames}
+Regra: ${mode}
 Desconto: - ${money(discount)}`;
       }
 
@@ -1359,7 +1906,19 @@ Recebimento: ${receiving}
 
 Gostaria de confirmar a disponibilidade e combinar os detalhes do pedido.`;
 
+      if(activeCoupon && discount>0){
+        registerCouponUsage(activeCoupon);
+      }
+
       window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`,"_blank");
+
+      if(activeCoupon){
+        activeCoupon=null;
+        document.getElementById("couponInput").value="";
+        document.getElementById("couponMsg").textContent="";
+        updateCart();
+      }
+
       closeReview();
     }
 
